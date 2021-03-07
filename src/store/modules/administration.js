@@ -64,6 +64,18 @@ export default {
                 name: data.name
             });
             ctx.dispatch("loadRole");
+        },
+
+        async createUser(ctx, data) {
+            console.log("Я здесь был!")
+            let response = await AXIOS.post('/registration/createUser',
+                {
+                    name: data.name,
+                    email: data.email,
+                    password: data.password
+                }
+            );
+            ctx.commit("clearListRole");
         }
 
 

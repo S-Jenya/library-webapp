@@ -1,14 +1,16 @@
 import Vue from 'vue'
 import App from './App.vue'
+import Vuelidate from "vuelidate/src";
 import store from './store'
+import VueRouter from 'vue-router'
+import router from '@/router'
 import {BootstrapVue} from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import VueRouter from 'vue-router'
-import router from '@/router'
 
 Vue.config.productionTip = false
 
+Vue.use(Vuelidate)
 Vue.use(BootstrapVue)
 Vue.use(VueRouter)
 
