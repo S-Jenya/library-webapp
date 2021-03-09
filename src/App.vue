@@ -19,7 +19,8 @@
                 <b-button size="sm" class="my-2 my-sm-0" type="submit">Поиск</b-button>
               </b-nav-form>
 
-              <b-button  v-b-modal.modal-center style="margin-left: 5px" class="my-2 my-sm-0" type="button" @click="openRegistrationModal">Войти</b-button>
+              <b-button  v-b-modal.modal-center style="margin-left: 5px" class="my-2 my-sm-0" type="button" @click="openRegistrationModal">MODAL</b-button>
+              <b-button  v-b-modal.modal-center style="margin-left: 5px" class="my-2 my-sm-0" type="button" to="/login">Войти</b-button>
               <b-button id="show-btn" type="button"  to="/registration">Регистрация</b-button>
               <modal
                   v-if="isModalOpen"

@@ -67,7 +67,6 @@ export default {
         },
 
         async createUser(ctx, data) {
-            console.log("Я здесь был!")
             let response = await AXIOS.post('/registration/createUser',
                 {
                     name: data.name,
@@ -76,8 +75,22 @@ export default {
                 }
             );
             ctx.commit("clearListRole");
-        }
+        },
 
+        async loginSubmitHandler(ctx, data) {
+            let response = await AXIOS.post('/perform_login',
+                {
+                    login: data.login,
+                    password: data.password
+                }
+            ).then(result => {
+                    console.log(result)
+
+                }, error => {
+                    console.log(error)
+                })
+            ;
+        }
 
     }
 }
