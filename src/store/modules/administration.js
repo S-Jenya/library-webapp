@@ -1,4 +1,5 @@
 import {AXIOS} from "@/httpCommons";
+import authHeader from "@/authHeader"
 
 export default {
     state: {
@@ -20,11 +21,24 @@ export default {
         getRoleModal(state) {
             return state.roleModal;
         },
-        getId(state, data){
+        getId(state, data) {
             return state.roleModal.idRole;
         },
-        getName(state, data){
+        getName(state, data) {
             return state.roleModal.inputText;
+        },
+        isAdmin() {
+            let user = JSON.parse(localStorage.getItem('user'));
+            if (typeof user === 'undefined' || user === null) {
+                return false
+            } else {
+                if (user.roles[0] === "ADMIN") {
+                    return true;
+                } else {
+                    return false
+                }
+            }
+
         }
     },
 
@@ -52,17 +66,26 @@ export default {
 
     actions: {
         async loadRole(ctx) {
-            let response = await AXIOS.get('/admin/getRole');
+            console.log(authHeader())
+            let response = await AXIOS.get('/admin/getRole',
+                {
+                    headers: authHeader()
+                }).catch(error => {
+                console.log(error.response.data);
+            });
             ctx.commit("fillRol", response.data);
         },
         async addRoleFunc(ctx) {
-            await AXIOS.post('/admin/addRole', {name: this.nameNewRole});
+            await AXIOS.post('/admin/addRole', {name: this.nameNewRole}, {headers: authHeader()});
         },
         async updRoleFunc(ctx, data) {
             await AXIOS.post('/admin/updRole', {
-                id: data.id,
-                name: data.name
-            });
+                    id: data.id,
+                    name: data.name
+                },
+                {
+                    headers: authHeader()
+                });
             ctx.dispatch("loadRole");
         },
 
@@ -77,20 +100,10 @@ export default {
             ctx.commit("clearListRole");
         },
 
-        async loginSubmitHandler(ctx, data) {
-            let response = await AXIOS.post('/perform_login',
-                {
-                    login: data.login,
-                    password: data.password
-                }
-            ).then(result => {
-                    console.log(result)
-
-                }, error => {
-                    console.log(error)
-                })
-            ;
+        getLocalStoreInfo() {
+            console.log(JSON.parse(localStorage.getItem('user')))
         }
+
 
     }
 }

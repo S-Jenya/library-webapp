@@ -2,10 +2,17 @@ import {AXIOS} from "@/httpCommons";
 
 export default {
     state: {
-        registration: {
-            name: '',
-            email: '',
-            password: ''
+        message: ''
+    },
+
+    getters: {
+        isAuth() {
+            let user = JSON.parse(localStorage.getItem('user'));
+            if (user === null) {
+                return false
+            } else {
+                return true
+            }
         }
     },
 
@@ -31,6 +38,33 @@ export default {
                 }
             );
             ctx.commit("clearListRole");
+        },
+
+        async loginSubmitHandler(ctx, data) {
+            console.log(data)
+            let response = await AXIOS.post('/authenticate',
+                {
+                    name: data.login,
+                    password: data.password
+                }
+            ).then(result => {
+                console.log('result from server:\n', result);
+                if (result.status === 200) {
+                    localStorage.setItem('user', JSON.stringify(result.data));
+                    // console.log(JSON.parse(localStorage.getItem('user')));
+                    document.location.href = "/"
+                }
+
+            }).catch(error => {
+                document.getElementById('errorField').append(error.response.data.message)
+                console.log(error.response.data);
+            });
+        },
+
+        logout() {
+            localStorage.removeItem('user');
+            document.location.href = "/"
         }
+
     }
 }
