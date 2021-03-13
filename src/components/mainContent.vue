@@ -1,5 +1,12 @@
 <template>
     <b-container style="margin-top: 30px">
+      <div class="row mb-4">
+        <div class="col-md-8 offset-md-2">
+          <b-input class="mr-sm-2" placeholder="Я ищу..."></b-input>
+<!--          <b-button size="sm" class="my-2 my-sm-0" type="submit">Поиск</b-button>-->
+        </div>
+      </div>
+
       <b-row align-v="center" style="height: auto; margin: 10px;">
           <cardItem v-for="job in jobs" :key="jobs.id" :name="job.title" class="h-8000 m-auto">
             <template v-slot:body style="margin-top: 50px">

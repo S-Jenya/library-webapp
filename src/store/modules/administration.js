@@ -5,6 +5,7 @@ export default {
     state: {
         nameNewRole: '',
         role: [],
+        users: [],
         roleModal: {
             titleRoleModal: '',
             textRoleModal: '',
@@ -17,6 +18,9 @@ export default {
     getters: {
         getRole(state) {
             return state.role;
+        },
+        getUsers(state) {
+            return state.users;
         },
         getRoleModal(state) {
             return state.roleModal;
@@ -49,6 +53,10 @@ export default {
         fillRol(state, data) {
             data.forEach(element => state.role.push(element));
         },
+        fillUsers(state,data) {
+            data.forEach(element => state.users.push(element));
+            console.log(state.users)
+        },
         addRole(state, data) {
             this.nameNewRole = data.name;
         },
@@ -66,7 +74,6 @@ export default {
 
     actions: {
         async loadRole(ctx) {
-            console.log(authHeader())
             let response = await AXIOS.get('/admin/getRole',
                 {
                     headers: authHeader()
@@ -74,6 +81,15 @@ export default {
                 console.log(error.response.data);
             });
             ctx.commit("fillRol", response.data);
+        },
+        async loadUsers(ctx) {
+            let response = await AXIOS.get('/admin/getUsers',
+                {
+                    headers: authHeader()
+                }).catch(error => {
+                console.log(error.response.data);
+            });
+            ctx.commit("fillUsers", response.data);
         },
         async addRoleFunc(ctx) {
             await AXIOS.post('/admin/addRole', {name: this.nameNewRole}, {headers: authHeader()});

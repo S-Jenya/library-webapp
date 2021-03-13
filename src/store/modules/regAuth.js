@@ -34,9 +34,17 @@ export default {
                 {
                     name: data.name,
                     email: data.email,
+                    login: data.login,
                     password: data.password
                 }
-            );
+            ).then(result => {
+                console.log('result from server:\n', result);
+                if (result.status === 200) {
+                    document.location.href = "/"
+                }
+            }).catch(error => {
+                console.log(error.response.data);
+            });
             ctx.commit("clearListRole");
         },
 
@@ -44,14 +52,13 @@ export default {
             console.log(data)
             let response = await AXIOS.post('/authenticate',
                 {
-                    name: data.login,
+                    login: data.login,
                     password: data.password
                 }
             ).then(result => {
                 console.log('result from server:\n', result);
                 if (result.status === 200) {
                     localStorage.setItem('user', JSON.stringify(result.data));
-                    // console.log(JSON.parse(localStorage.getItem('user')));
                     document.location.href = "/"
                 }
 

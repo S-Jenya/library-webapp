@@ -4,8 +4,19 @@
     <b-navbar toggleable="lg" type="dark" variant="success">
       <b-navbar-brand href="#" to="/">Библиотвека</b-navbar-brand>
 
-      <b-button v-if="isAdmin" style="margin-left: 5px" class="my-2 my-sm-0" to="/admin">Admin</b-button>
-      <b-button style="margin-left: 5px" class="my-2 my-sm-0" @click="getLocalStoreInfo">LocaleStore</b-button>
+<!--      <b-button v-if="isAdmin" class="my-2 my-sm-0 ml-5" to="/admin">Admin</b-button>-->
+
+      <b-dropdown v-if="isAdmin"  right text="Администрирование">
+        <b-dropdown-item to="/admin/userlist">Пользователи</b-dropdown-item>
+        <b-dropdown-item to="/admin/rolelist">Роли</b-dropdown-item>
+        <b-dropdown-divider></b-dropdown-divider>
+        <b-dropdown-item>Книги</b-dropdown-item>
+        <b-dropdown-item>Авторы</b-dropdown-item>
+        <b-dropdown-item>Жанры</b-dropdown-item>
+      </b-dropdown>
+
+      <b-button class="my-2 my-sm-0 ml-2" @click="getLocalStoreInfo">LocaleStore</b-button>
+
 
       <b-collapse id="nav-collapse" is-nav>
         <!--        <b-navbar-nav>-->
@@ -15,12 +26,12 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-form>
+<!--          <b-nav-form>
             <b-form-input size="sm" class="mr-sm-2" placeholder="Я ищу..."></b-form-input>
             <b-button size="sm" class="my-2 my-sm-0" type="submit">Поиск</b-button>
-          </b-nav-form>
+          </b-nav-form>-->
 
-          <b-button v-if="isAuth === false" v-b-modal.modal-center style="margin-left: 5px" class="my-2 my-sm-0" type="button"
+          <b-button v-if="isAuth === false" v-b-modal.modal-center style="margin-left: 5px" class="my-2 my-sm-0 mr-3" type="button"
                     @click="openRegistrationModal">Войти
           </b-button>
 <!--          <b-button v-if="isAuth === false" v-b-modal.modal-center style="margin-left: 5px" class="my-2 my-sm-0" type="button" to="/login">

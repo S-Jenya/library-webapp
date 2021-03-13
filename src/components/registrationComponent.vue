@@ -13,6 +13,15 @@
           <small v-else-if="$v.name.$dirty && !$v.name.alpha" style="color: red">Имя может содержать только символы алфавита</small>
         </p>
 
+        <p><label>Логин</label>
+          <input id="login" type="text" class="form-control"
+                 v-model="login"
+                 :class="{invalid: ($v.login.$dirty && !$v.login.required) || ($v.login.$dirty && !$v.login.alpha)}"
+          />
+          <small v-if="$v.login.$dirty && !$v.login.required" style="color: red">Поле не может быть пустым</small>
+          <small v-else-if="$v.login.$dirty && !$v.login.alpha" style="color: red">Логин может содержать только символы алфавита</small>
+        </p>
+
         <p><label>Email</label>
           <input id="email" type="text" class="form-control"
                  v-model.trim="email"
@@ -48,11 +57,16 @@ export default {
   name: "registrationComponent",
   data: () => ({
     name: '',
+    login: '',
     email: '',
     password: ''
   }),
   validations: {
     name: {
+      alpha,
+      required
+    },
+    login: {
       alpha,
       required
     },
@@ -73,10 +87,10 @@ export default {
         this.$v.$touch();
         return;
       } else {
-        console.log(`Name: ${this.name} Email: ${this.email} Password: ${this.password}`)
         this.createUser({
           name: this.name,
           email: this.email,
+          login: this.login,
           password: this.password
         })
       }

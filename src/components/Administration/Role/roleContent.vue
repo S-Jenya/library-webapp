@@ -1,5 +1,16 @@
 <template>
-  <div>
+  <div class=" center-block" style="width: 80%; margin-left: 10%; margin-right: 10%">
+    <h1><p class="top-name center-block text-center">Список ролей</p></h1>
+    <b-button style="margin-left: 5px" class="my-2 my-sm-0" @click="openNewRoleModal()">Новая роль</b-button>
+    <roleModal
+        v-if="isRoleModalOpen"
+        :title="getRoleModal.titleRoleModal"
+        :text="getRoleModal.textRoleModal"
+        :idRole="getRoleModal.idRole"
+        :inputText="getRoleModal.inputText"
+        :mode="getRoleModal.mode"
+        @close="isRoleModalOpen = false"
+    />
     <table class="table">
       <thead>
       <tr>
@@ -27,7 +38,7 @@ import RoleModal from "@/components/Administration/Role/RoleModal";
 export default {
   name: "roleContent",
   components: {RoleModal},
-  computed: mapGetters(['getRole']),
+  computed: mapGetters(['getRole', 'getRoleModal']),
   data() {
     return {
       isRoleModalOpen: true
@@ -45,11 +56,18 @@ export default {
         mode: "1"
       });
       this.$bvModal.show('roleModal');
+    },
+    openNewRoleModal() {
+      this.setRoleModal({
+        title: "Новая Роль",
+        text: "Введите наименование",
+        mode: "0"
+      });
+      this.$bvModal.show('roleModal');
     }
   },
-  async mounted() {
-    console.log("hello")
-    await this.loadRole()
+  mounted() {
+    this.loadRole()
   }
 }
 </script>
