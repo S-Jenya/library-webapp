@@ -3,8 +3,9 @@ import adminComponent from './components/Administration/adminComponent'
 import mainContent from './components/mainContent'
 import registrationComponent from "@/components/registrationComponent";
 import login from '@/components/login'
-import UserList from "@/components/Administration/UserList";
+import UserList from "@/components/Administration/User/UserList";
 import roleContent from "@/components/Administration/Role/roleContent";
+import boorCreate from "@/components/Administration/Book/BookCreate"
 
 export default new VueRouter({
     mode: "history",
@@ -38,6 +39,11 @@ export default new VueRouter({
             path: "/admin/rolelist",
             name: 'rolelist',
             component: roleContent
+        },
+        {
+            path: "/admin/bookCreate",
+            name: 'bookCreate',
+            component: boorCreate
         }
     ]
 })

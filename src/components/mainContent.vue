@@ -6,7 +6,7 @@
 <!--          <b-button size="sm" class="my-2 my-sm-0" type="submit">Поиск</b-button>-->
         </div>
       </div>
-
+      <b-button id="show-btn" type="button" to="/admin/bookCreate">Добавить книгу</b-button>
       <b-row align-v="center" style="height: auto; margin: 10px;">
           <cardItem v-for="job in jobs" :key="jobs.id" :name="job.title" class="h-8000 m-auto">
             <template v-slot:body style="margin-top: 50px">

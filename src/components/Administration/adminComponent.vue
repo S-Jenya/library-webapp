@@ -2,8 +2,6 @@
   <div>
     <!--    <div class="col-lg-7 col-md-2 col-sm-2 col-xs-1">-->
     <div class=" center-block" style="width: 80%; margin-left: 10%; margin-right: 10%">
-
-
       <h1><p class="top-name center-block text-center">Панель администратора</p></h1>
       <b-card no-body>
         <b-tabs pills card vertical nav-wrapper-class="w-20">
@@ -39,22 +37,21 @@
       </b-card>
     </div>
     <!--    </div>-->
-
   </div>
 </template>
 
 
 <script>
-import userList from './User/userList'
 import roleModal from './Role/RoleModal'
 import roleContent from "@/components/Administration/Role/roleContent";
+import UserList from "@/components/Administration/User/UserList"
 
 import {mapGetters, mapMutations} from 'vuex';
 
 export default {
   name: 'App',
   components: {
-    userList, roleModal, roleContent
+    UserList, roleModal, roleContent
   },
   computed: mapGetters(['getRoleModal']),
   data() {
