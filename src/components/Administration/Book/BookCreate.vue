@@ -12,7 +12,8 @@
         <p><label>Обложка</label>
           <input id="cover" type="file" ref="uploadImage" @change="onImageUpload()" class="form-control h-50" required/>
         </p>
-        <p><label>Файл</label>
+        <p>
+          <label>Файл</label>
           <input id="fileBook" type="file" ref="uploadImage" @change="onImageUpload()" class="form-control h-50" required/>
         <p>
           <b-button type="submit">Добавить</b-button>
