@@ -1,5 +1,5 @@
 <template>
-  <div class=" center-block" style="width: 80%; margin-left: 10%; margin-right: 10%">
+  <div class="center-block w-75 ml-auto mr-auto">
     <h1><p class="top-name center-block text-center">Администрирование пользователями</p></h1>
     <table class="table">
       <thead>

@@ -25,10 +25,10 @@ export default {
         getRoleModal(state) {
             return state.roleModal;
         },
-        getId(state, data) {
+        getId(state) {
             return state.roleModal.idRole;
         },
-        getName(state, data) {
+        getName(state) {
             return state.roleModal.inputText;
         },
         isAdmin() {

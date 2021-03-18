@@ -1,32 +1,34 @@
 <template>
-    <b-container style="margin-top: 30px">
-      <div class="row mb-4">
-        <div class="col-md-8 offset-md-2">
-          <b-input class="mr-sm-2" placeholder="Я ищу..."></b-input>
-<!--          <b-button size="sm" class="my-2 my-sm-0" type="submit">Поиск</b-button>-->
-        </div>
+  <b-container class="mt-5">
+    <div class="row mb-4">
+      <div class="col-md-8 offset-md-2">
+        <b-input class="mr-sm-2" placeholder="Я ищу..."></b-input>
+        <!--          <b-button size="sm" class="my-2 my-sm-0" type="submit">Поиск</b-button>-->
       </div>
-      <b-button id="show-btn" type="button" to="/admin/bookCreate">Добавить книгу</b-button>
-      <b-row align-v="center" style="height: auto; margin: 10px;">
-          <cardItem v-for="job in jobs" :key="jobs.id" :name="job.title" class="h-8000 m-auto">
-            <template v-slot:body style="margin-top: 50px">
-              <p>
-                Оценка
-              </p>
-            </template>
-          </cardItem>
-      </b-row>
-      <b-pagination
-          v-model="currentPage"
-          :total-rows="rows"
-          :per-page="perPage"
-          first-text="First"
-          prev-text="Prev"
-          next-text="Next"
-          last-text="Last"
-          @input="paginate(currentPage)"
-      ></b-pagination>
-    </b-container>
+    </div>
+    <b-button id="show-btn" type="button" to="/admin/bookCreate">Добавить книгу</b-button>
+    <b-row align-v="center" style="height: auto; /*margin: 10px;*/" class="mt-2">
+      <cardItem v-for="job in jobs" :key="jobs.id" :name="job.title"
+                class="h-8000 mt-lg-2 mb-lg-3 mr-lg-3 ml-lg-3 mt-md-3 ml-sm-2 mr-sm-2 ml-md-1 mt-sm-3  shadow"
+      >
+        <template v-slot:body style="margin-top: 50px">
+          <p>
+            Оценка
+          </p>
+        </template>
+      </cardItem>
+    </b-row>
+    <b-pagination
+        v-model="currentPage"
+        :total-rows="rows"
+        :per-page="perPage"
+        first-text="First"
+        prev-text="Prev"
+        next-text="Next"
+        last-text="Last"
+        @input="paginate(currentPage)"
+    ></b-pagination>
+  </b-container>
 </template>
 
 <script>
@@ -53,7 +55,7 @@ export default {
       this.jobs = val;
       this.rows = this.jobs.length;
     },
-    paginate(currentPage){
+    paginate(currentPage) {
       alert(currentPage)
     }
   }

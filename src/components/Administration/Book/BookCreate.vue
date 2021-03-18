@@ -7,14 +7,31 @@
           <input id="name" type="text" class="form-control" v-model="name"/>
         </p>
         <p><label>Описание</label>
-          <input id="description" type="text" class="form-control" v-model="name"/>
+          <input id="description" type="text" class="form-control" v-model="description"/>
         </p>
+        <label>Жанр</label>
+        <p>
+          <select class="w-25" id="genre">
+            <option v-for="genre in getGenres" :value="genre.idGenre">{{ genre.name }}</option>
+          </select>
+        </p>
+
+        <label>Автор</label>
+        <p>
+          <select class="w-75" id="author">
+            <option v-for="author in getAuthor" :value="author.idAuthor">{{ author.firstName }} {{ author.lastName }}
+              {{ author.patronymic }}
+            </option>
+          </select>
+        </p>
+
         <p><label>Обложка</label>
           <input id="cover" type="file" ref="uploadImage" @change="onImageUpload()" class="form-control h-50" required/>
         </p>
         <p>
           <label>Файл</label>
-          <input id="fileBook" type="file" ref="uploadImage" @change="onImageUpload()" class="form-control h-50" required/>
+          <input id="fileBook" type="file" ref="uploadContent" @change="onContentUpload()" class="form-control h-50"
+                 required/>
         <p>
           <b-button type="submit">Добавить</b-button>
         </p>
@@ -24,26 +41,60 @@
 </template>
 
 <script>
-import {mapActions} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "BookCreate",
+  computed: mapGetters(['getGenres', 'getAuthor']),
   data: () => ({
-    formData: undefined
+    baseData: undefined,
+    formImageData: undefined,
+    formContentData: undefined,
+    name: "",
+    description: ""
   }),
   methods: {
-    ...mapActions(['uploadBook']),
+    ...mapActions(['uploadBook', 'getGenreList', 'getAuthorList']),
 
     onImageUpload() {
       let file = this.$refs.uploadImage.files[0]
-      this.formData = new FormData()
-      this.formData.append("file", file)
+      this.formImageData = new FormData()
+      this.formImageData.append("fileImage", file)
+      console.log(file.type)
+      if(file.type !== "image/png") {
+        console.log("Недопустимый формат файла")
+        this.formImageData = undefined
+      }
     },
+    onContentUpload() {
+      let file = this.$refs.uploadContent.files[0]
+      this.formContentData = new FormData()
+      this.formContentData.append("fileContent", file)
+      if(file.type !== "application/pdf") {
+        console.log("Недопустимый формат файла")
+        this.formContentData = undefined
+      }
+    },
+
     uploadData() {
-      if (this.formData !== undefined) {
-        this.uploadBook(this.formData)
+      if (this.formImageData !== undefined && this.formContentData !== undefined) {
+        // if(this.formImageData.data.type)
+        let file1 = this.$refs.uploadImage.files[0]
+        let file2 = this.$refs.uploadContent.files[0]
+        this.baseData = new FormData();
+        this.baseData.append("name", this.name)
+        this.baseData.append("description", this.description)
+        this.baseData.append("genre", document.getElementById('genre').value)
+        this.baseData.append("author", document.getElementById('author').value)
+        this.baseData.append("fileImage", file1)
+        this.baseData.append("fileContent", file2)
+        this.uploadBook(this.baseData);
       }
     }
+  },
+  mounted() {
+    this.getGenreList()
+    this.getAuthorList()
   }
 }
 </script>

@@ -55,7 +55,7 @@ export default {
   },
   computed: mapGetters(['getRoleModal', 'getId', 'getName']),
   methods: {
-    ...mapActions(['addRoleFunc', 'updRoleFunc']),
+    ...mapActions(['addRoleFunc', 'updRoleFunc', 'addGenre']),
     ...mapMutations(['addRole', 'updNameRole']),
 
     createNewRole() {
@@ -74,6 +74,8 @@ export default {
             name: this.getName
           };
           this.updRoleFunc(varData)
+        } else if(this.mode === "2") {
+          this.addGenre({name: this.inputText})
         }
         this.closeModal();
       }

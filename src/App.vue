@@ -11,8 +11,8 @@
         <b-dropdown-item to="/admin/rolelist">Роли</b-dropdown-item>
         <b-dropdown-divider></b-dropdown-divider>
         <b-dropdown-item>Книги</b-dropdown-item>
-        <b-dropdown-item>Авторы</b-dropdown-item>
-        <b-dropdown-item>Жанры</b-dropdown-item>
+        <b-dropdown-item to="/admin/authorList">Авторы</b-dropdown-item>
+        <b-dropdown-item to="/admin/genreList">Жанры</b-dropdown-item>
       </b-dropdown>
 
       <b-button class="my-2 my-sm-0 ml-2" @click="getLocalStoreInfo">LocaleStore</b-button>
