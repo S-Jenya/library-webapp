@@ -6,7 +6,7 @@ import login from '@/components/login'
 import UserList from "@/components/Administration/User/UserList";
 import roleContent from "@/components/Administration/Role/roleContent";
 import boorCreate from "@/components/Administration/Book/BookCreate";
-import GenreList from "@/components/Administration/GenreList";
+import GenreList from "@/components/Administration/Genre/GenreList";
 import AuthorList from "@/components/Administration/Author/AuthorList";
 
 export default new VueRouter({

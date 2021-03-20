@@ -69,6 +69,9 @@ export default {
         },
         updNameRole(state, data) {
             state.roleModal.inputText = data.name;
+        },
+        cleanUserList(state) {
+            state.users = []
         }
     },
 
@@ -89,6 +92,7 @@ export default {
                 }).catch(error => {
                 console.log(error.response.data);
             });
+            ctx.commit("cleanUserList");
             ctx.commit("fillUsers", response.data);
         },
         async addRoleFunc(ctx) {

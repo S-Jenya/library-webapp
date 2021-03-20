@@ -70,6 +70,7 @@ export default {
       let file = this.$refs.uploadContent.files[0]
       this.formContentData = new FormData()
       this.formContentData.append("fileContent", file)
+      console.log(file.type)
       if(file.type !== "application/pdf") {
         console.log("Недопустимый формат файла")
         this.formContentData = undefined
@@ -77,7 +78,6 @@ export default {
     },
 
     uploadData() {
-      if (this.formImageData !== undefined && this.formContentData !== undefined) {
         // if(this.formImageData.data.type)
         let file1 = this.$refs.uploadImage.files[0]
         let file2 = this.$refs.uploadContent.files[0]
@@ -88,8 +88,8 @@ export default {
         this.baseData.append("author", document.getElementById('author').value)
         this.baseData.append("fileImage", file1)
         this.baseData.append("fileContent", file2)
-        this.uploadBook(this.baseData);
-      }
+        console.log(this.baseData)
+       this.uploadBook(this.baseData);
     }
   },
   mounted() {

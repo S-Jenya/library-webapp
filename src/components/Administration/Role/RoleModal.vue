@@ -1,7 +1,6 @@
 <template>
   <!-- Modal -->
   <div>
-
     <form @submit.prevent="createNewRole()">
       <b-modal id="roleModal" centered size="md">
         <template #modal-title>
@@ -74,8 +73,6 @@ export default {
             name: this.getName
           };
           this.updRoleFunc(varData)
-        } else if(this.mode === "2") {
-          this.addGenre({name: this.inputText})
         }
         this.closeModal();
       }

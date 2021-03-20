@@ -6,26 +6,36 @@
         <!--          <b-button size="sm" class="my-2 my-sm-0" type="submit">Поиск</b-button>-->
       </div>
     </div>
-    <b-button id="show-btn" type="button" to="/admin/bookCreate">Добавить книгу</b-button>
-    <b-row align-v="center" style="height: auto; /*margin: 10px;*/" class="mt-2">
-      <cardItem v-for="job in jobs" :key="jobs.id" :name="job.title"
-                class="h-8000 mt-lg-2 mb-lg-3 mr-lg-3 ml-lg-3 mt-md-3 ml-sm-2 mr-sm-2 ml-md-1 mt-sm-3  shadow"
+    <FilterGenre/>
+    <b-button v-if="isAdmin" id="show-btn"
+              type="button"
+              class="bg-primary"
+              to="/admin/bookCreate">Добавить книгу
+    </b-button>
+
+    <b-row align-v="center" class="mt-2 h-auto">
+
+      <cardItem v-for="card in getCardInfo" :key="getCardInfo.id"
+                class="h-8000 mt-lg-2 mb-lg-3 mr-lg-auto ml-lg-auto mt-md-3 ml-sm-2 mr-sm-2 ml-md-1 mt-sm-3  shadow"
+                :img-src="card.url"
+                :name="card.name"
+                :author="card.author"
       >
-        <template v-slot:body style="margin-top: 50px">
+<!--        <template v-slot:body style="margin-top: 50px">
           <p>
             Оценка
           </p>
-        </template>
+        </template>-->
       </cardItem>
     </b-row>
     <b-pagination
         v-model="currentPage"
         :total-rows="rows"
         :per-page="perPage"
-        first-text="First"
-        prev-text="Prev"
-        next-text="Next"
-        last-text="Last"
+        first-text="Начало"
+        prev-text="<"
+        next-text=">"
+        last-text="Конец"
         @input="paginate(currentPage)"
     ></b-pagination>
   </b-container>
@@ -33,31 +43,29 @@
 
 <script>
 import cardItem from "@/components/cardItem";
+import FilterGenre from "@/components/FilterGenre";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "mainContent",
-  components: {cardItem},
+  components: {cardItem, FilterGenre},
+  computed: mapGetters(['isAdmin', 'getCardInfo']),
   data() {
     return {
-      jobs: [],
       currentPage: 1,
       rows: 1,
       perPage: 3
     }
   },
-  mounted() {
-    this.loadCards()
-  },
   methods: {
-    async loadCards() {
-      const res = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=10');
-      const val = await res.json();
-      this.jobs = val;
-      this.rows = this.jobs.length;
-    },
+    ...mapActions(['loadCardList']),
+
     paginate(currentPage) {
       alert(currentPage)
     }
+  },
+  mounted() {
+    this.loadCardList()
   }
 };
 </script>
