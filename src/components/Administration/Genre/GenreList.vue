@@ -1,7 +1,7 @@
 <template>
   <div class="center-block w-75 ml-lg-auto mr-lg-auto">
     <h1><p class="top-name center-block text-center">Администрирование жанрами</p></h1>
-    <b-button style="margin-left: 5px" class="my-2 my-sm-0 bg-primary" @click="openNewGenreModal()">Новая роль
+    <b-button style="margin-left: 5px" class="my-2 my-sm-0 bg-primary" @click="openNewGenreModal()">Новый жанр
     </b-button>
     <GenreModal
         v-if="isGenreModalOpen"
@@ -11,10 +11,7 @@
         :inputText="getGenreModal.inputText"
         :mode="getGenreModal.mode"
         @close="isGenreModalOpen = false"
-        ref="genreModal"
-        @hide="testF('success')"
     />
-    <b-button variant="success" @click="testF('success')" class="mb-2">Success</b-button>
     <table class="table mt-3 w-50 text-center ml-auto mr-auto">
       <thead>
       <tr>
@@ -27,8 +24,10 @@
         <td>{{ index + 1 }}</td>
         <td>{{ genre.name }}</td>
         <td>
-          <b-button class="my-2 my-sm-0 bg-primary mr-2" @click="openEditGenereModal(genre.idGenre, genre.name)">Редактировать</b-button>
-          <b-button class="my-2 my-sm-0 bg-danger mr-2" @click="">Удалить</b-button>
+          <b-button class="my-2 my-sm-0 bg-primary mr-2" @click="openEditGenreModal(genre.idGenre, genre.name)">
+            Редактировать
+          </b-button>
+          <b-button class="my-2 my-sm-0 bg-danger mr-2" @click="deleteGenreFunc(genre.idGenre)">Удалить</b-button>
         </td>
       </tr>
     </table>
@@ -43,24 +42,26 @@ import toastFunc from "@/toastFunc";
 export default {
   name: "GenreList",
   components: {GenreModal, toastFunc},
-  computed: mapGetters(['getGenres', 'getRoleModal', "getGenreModal", 'getGenreStatus']),
+  computed: mapGetters(['getGenres', 'getRoleModal', "getGenreModal"]),
   data() {
     return {
       isGenreModalOpen: true
     }
   },
   methods: {
-    ...mapActions(['getGenreList']),
+    ...mapActions(['getGenreList', 'deleteGenre']),
     ...mapMutations(['setGenreModal']),
     openNewGenreModal() {
+      // this.isGenreModalOpen = true
       this.setGenreModal({
         title: "Новый жанр",
         text: "Наименование нового жанра",
         mode: "0"
       });
-      this.$bvModal.show('genreModal');
+      this.$bvModal.show('idGenreModal');
     },
-    openEditGenereModal(id, txt) {
+    openEditGenreModal(id, txt) {
+      // this.isGenreModalOpen = true
       this.setGenreModal({
         title: "Редактировать наименование жанра",
         text: "Наименование жанра",
@@ -68,31 +69,27 @@ export default {
         idGenre: id,
         mode: "1"
       });
-      this.$bvModal.show('genreModal');
+      console.log("HER. Пытаюсь открыть модальное окно\n" + this.isGenreModalOpen)
+      //
+      this.$bvModal.show('idGenreModal');
     },
-    testF(variant, message) {
-      this.$bvToast.toast(message, {
-        title: `Внимание ${variant || 'default'}`,
-        variant: variant,
-        solid: true
-      })
+    deleteGenreFunc(id) {
+      this.deleteGenre({id: id, vm: this})
     }
   },
   mounted() {
     this.getGenreList()
-  },
-  watch: {
+  }
+  /*, watch: {
     isGenreModalOpen: function () {
       let serverResult =  this.getGenreStatus
-      // console.log("In function")
-      // console.log(serverResult)
       if (this.isGenreModalOpen === false) {
         if(serverResult.status === "200") {
           this.testF('success', 'Запись успешно добавлена. СТАТУС 200')
         }
       }
     }
-  }
+  }*/
 }
 </script>
 

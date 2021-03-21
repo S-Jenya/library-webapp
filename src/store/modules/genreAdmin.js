@@ -10,10 +10,8 @@ export default {
             text: '',
             inputText: '',
             idGenre: '',
-            mode: '',    // 0 - new; 1 - edit
-            status: ''
-        },
-        serverStatus: ""
+            mode: ''    // 0 - new; 1 - edit
+        }
     },
 
     getters: {
@@ -22,10 +20,6 @@ export default {
         },
         getGenreModal(state) {
             return state.genreModal;
-        },
-        getGenreStatus(state) {
-            console.log("getGenreStatus: " + state.lastStatus)
-            return state.serverStatus
         }
     },
 
@@ -50,11 +44,6 @@ export default {
         changeInput(state, data) {
             state.genreModal.inputText = data.str;
             console.log(state.genreModal.inputText)
-        },
-        setServerResult(state, data) {
-            console.log("setStatus data: ")
-            console.log(data)
-            state.serverStatus = data.status
         }
     },
 
@@ -71,8 +60,7 @@ export default {
         },
 
         async addGenre(ctx, data) {
-
-            console.log(data);
+            let isErrorExist = false
             let response = await AXIOS.post('/admin/addGenre',
                 {
                     name: data.name
@@ -86,14 +74,21 @@ export default {
                     erMes.innerText = error.response.data.message
                 })
                 .then(res => {
-                    ctx.commit("setServerResult", res);
-                    ctx.commit("cleanGenre");
-                    // toastFunc('success');
-                    ctx.commit("fillGenre", response.data);
+                    ctx.dispatch("getGenreList");
+                    if (!isErrorExist) {
+                        let message = res.data.message
+                        data.vm.$bvModal.hide('idGenreModal')
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
                 });
         },
 
         async updGenre(ctx, data) {
+            let isErrorExist = false
             let response = await AXIOS.post('/admin/updateGenre',
                 {
                     id: data.id,
@@ -103,19 +98,54 @@ export default {
                     headers: authHeader()
                 })
                 .catch(error => {
+                    isErrorExist = true
                     console.log(error.response.data.message);
-                    var erMes = document.getElementById('idGenreError')
+                    let erMes = document.getElementById('idGenreError')
                     erMes.innerText = error.response.data.message
                 })
                 .then(res => {
-                    ctx.commit("setServerResult", res);
-                    ctx.commit("cleanGenre");
-                    ctx.commit("fillGenre", res.data.toString());
-                     this.$bvToast.toast('Toast body content', {
-                         title: `Variant ${'success' || 'default'}`,
-                         variant: 'success',
-                         solid: true
-                     })
+                    ctx.dispatch("getGenreList");
+                    if (!isErrorExist) {
+                        let message = res.data.message
+                        // data.vm.closeGenreModal()
+                        data.vm.$bvModal.hide('idGenreModal')
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
+                });
+        },
+
+        async deleteGenre(ctx, data) {
+            let isErrorExist = false
+            let response = await AXIOS.delete('/admin/deleteGenre/' + data.id,
+                {
+                    headers: authHeader()
+                })
+                .catch(error => {
+                    isErrorExist = true
+                    // console.log(error.response.data.message);
+                    let message = error.response.data.message
+                    setTimeout(() => (data.vm.$bvToast.toast(message, {
+                        title: 'Ошибка',
+                        variant: 'danger',
+                        solid: true
+                    })), 10)
+                })
+                .then(res => {
+                    ctx.dispatch("getGenreList");
+                    if (!isErrorExist) {
+                        // console.log( res.data.message )
+                        let message = res.data.message
+                        // data.vm.closeGenreModal()
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
                 });
         }
     }

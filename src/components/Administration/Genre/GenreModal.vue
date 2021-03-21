@@ -1,7 +1,7 @@
 <template>
   <div>
     <form @submit.prevent="getRequest()">
-      <b-modal id="genreModal" centered size="md">
+      <b-modal id="idGenreModal" centered size="md">
         <template #modal-title>
           {{ title }}
         </template>
@@ -12,7 +12,7 @@
           <div id="idGenreError" style="color: red"></div>
         </div>
         <template #modal-footer>
-          <b-button @click="$bvModal.hide('roleModal')">Закрыть</b-button>
+          <b-button @click="$bvModal.hide('idGenreModal')">Закрыть</b-button>
           <b-button type="submit" @click="getRequest()">Применить</b-button>
         </template>
       </b-modal>
@@ -23,7 +23,6 @@
 <script>
 
 import {mapActions, mapGetters, mapMutations} from "vuex";
-import toastFunc from "@/toastFunc";
 
 export default {
   name: "GenreModal",
@@ -54,43 +53,36 @@ export default {
       default: ''
     }
   },
-  computed: mapGetters(['getGenreModal', 'getGenreStatus']),
+  computed: mapGetters(['getGenreModal']),
   methods: {
     ...mapActions(['addGenre', 'updGenre']),
     ...mapMutations(['addRole', 'changeInput']),
 
     getRequest() {
       if (this.strVal !== "") {
-        if(this.getGenreModal.mode === "0") {
-          this.addGenre({name: this.strVal})
+        if (this.getGenreModal.mode === "0") {
+          this.addGenre({
+            name: this.strVal,
+            vm: this
+          })
         } else if (this.getGenreModal.mode === "1") {
           this.updGenre({
             id: this.getGenreModal.idGenre,
-            name: this.strVal
+            name: this.strVal,
+            vm: this
           })
         }
-        // this.closeModal()
       }
-      // обработка результата
-      /*let ss = this.getGenreStatus
-      console.log("status: "+ ss)
-      for (var item in ss) {
-        console.log(item)
-      }
-      */
-      // this.closeModal()
     },
-    closeModal() {
+    closeGenreModal() {
       this.$emit('close')
     }
   },
   mounted() {
-    console.log(this.getGenreModal.inputText)
     this.strVal = this.getGenreModal.inputText
   },
   watch: {
-    inputText: function(newVal) {
-
+    inputText: function (newVal) {
       this.strVal = newVal
     }
   }
