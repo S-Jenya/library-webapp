@@ -5,9 +5,11 @@ export default {
     state: {
         authorModal: {
             titleAuthModal: '',
-            textFirstName: '',
-            textLastName: '',
-            textPatronymic: '',
+
+            inputFirstName: '',
+            inputLastName: '',
+            inputPatronymic: '',
+
             idAuth: '',
             mode: ''    // 0 - new; 1 - edit
         },
@@ -26,9 +28,10 @@ export default {
     mutations: {
         setAuthModal(state, data) {
             state.authorModal.titleAuthModal = data.title;
-            state.authorModal.textFirstName = data.textFirstName;
-            state.authorModal.textLastName = data.textLastName;
-            state.authorModal.textPatronymic = data.textPatronymic;
+            state.authorModal.inputFirstName = data.inputFirstName;
+            state.authorModal.inputLastName = data.inputLastName;
+            state.authorModal.inputPatronymic = data.inputPatronymic;
+
             state.authorModal.idAuth = data.idAuth;
             state.authorModal.mode = data.mode;
         },
@@ -53,14 +56,86 @@ export default {
         },
 
         async addAuthor(ctx, data) {
+            let isErrorExist = false
             let response = await AXIOS.post('/admin/addAuthor',
                 {
                     firstName: data.firstName,
                     lastName: data.lastName,
                     patronymic: data.patronymic
-                }, {headers: authHeader()}).catch(error => {
-                console.log(error.response.data);
-            });
+                }, {headers: authHeader()})
+                .catch(error => {
+                    console.log(error.response.data);
+                    let erMes = document.getElementById('idAuthorError')
+                    erMes.innerText = error.response.data.message
+                })
+                .then(res => {
+                    ctx.dispatch("getAuthorList");
+                    if (!isErrorExist) {
+                        let message = res.data.message
+                        data.vm.$bvModal.hide('authorModal')
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
+                });
+        },
+
+        async editAuthor(ctx, data) {
+            let isErrorExist = false
+            let response = await AXIOS.post('/admin/editAuthor',
+                {
+                    id: data.id,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    patronymic: data.patronymic
+                }, {headers: authHeader()})
+                .catch(error => {
+                    console.log(error.response.data);
+                    let erMes = document.getElementById('idAuthorError')
+                    erMes.innerText = error.response.data.message
+                })
+                .then(res => {
+                    ctx.dispatch("getAuthorList");
+                    if (!isErrorExist) {
+                        let message = res.data.message
+                        data.vm.$bvModal.hide('authorModal')
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
+                });
+        },
+
+        async deleteAuthor(ctx, data) {
+            let isErrorExist = false
+            let response = await AXIOS.delete('/admin/deleteAuthor/' + data.id,
+                {
+                    headers: authHeader()
+                })
+                .catch(error => {
+                    isErrorExist = true
+                    let message = error.response.data.message
+                    setTimeout(() => (data.vm.$bvToast.toast(message, {
+                        title: 'Ошибка',
+                        variant: 'danger',
+                        solid: true
+                    })), 10)
+                })
+                .then(res => {
+                    ctx.dispatch("getAuthorList");
+                    if (!isErrorExist) {
+                        let message = res.data.message
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
+                });
         }
     }
 }

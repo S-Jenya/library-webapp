@@ -70,7 +70,7 @@ export default {
                 })
                 .catch(error => {
                     console.log(error.response.data.message);
-                    var erMes = document.getElementById('idGenreError')
+                    let erMes = document.getElementById('idGenreError')
                     erMes.innerText = error.response.data.message
                 })
                 .then(res => {

@@ -69,8 +69,6 @@ export default {
         idGenre: id,
         mode: "1"
       });
-      console.log("HER. Пытаюсь открыть модальное окно\n" + this.isGenreModalOpen)
-      //
       this.$bvModal.show('idGenreModal');
     },
     deleteGenreFunc(id) {
