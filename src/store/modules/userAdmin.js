@@ -43,6 +43,13 @@ export default {
                 }
             }
 
+        },
+
+        getLocalStoreName() {
+            if(localStorage.length > 1) {
+                let user = JSON.parse(localStorage.getItem('user'));
+                return user.name
+            }
         }
     },
 

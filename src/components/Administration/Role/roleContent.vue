@@ -1,7 +1,7 @@
 <template>
-  <div class=" center-block" style="width: 80%; margin-left: 10%; margin-right: 10%">
+  <div class="center-block w-75 ml-auto mr-auto">
     <h1><p class="top-name center-block text-center">Список ролей</p></h1>
-    <b-button style="margin-left: 5px" class="my-2 my-sm-0" @click="openNewRoleModal()">Новая роль</b-button>
+    <b-button class="my-2 my-sm-0 bg-primary mr-2" @click="openNewRoleModal()">Новая роль</b-button>
     <roleModal
         v-if="isRoleModalOpen"
         :title="getRoleModal.titleRoleModal"
@@ -11,7 +11,7 @@
         :mode="getRoleModal.mode"
         @close="isRoleModalOpen = false"
     />
-    <table class="table">
+    <table class="table mt-3 w-50 text-center ml-auto mr-auto">
       <thead>
       <tr>
         <th>Номер</th>
@@ -23,8 +23,8 @@
         <td>{{ index + 1 }}</td>
         <td>{{ role.name }}</td>
         <td>
-          <b-button class="my-2 my-sm-0" @click="openEditRoleModal(role.idRole, role.name)">Редактировать</b-button>
-          <b-button class="my-2 my-sm-0">Удалить</b-button>
+          <b-button class="my-2 my-sm-0 bg-primary mr-2" @click="openEditRoleModal(role.idRole, role.name)">Редактировать</b-button>
+          <b-button class="my-2 my-sm-0 bg-danger mr-2">Удалить</b-button>
         </td>
       </tr>
     </table>

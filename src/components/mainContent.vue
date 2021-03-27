@@ -13,19 +13,20 @@
               to="/admin/bookCreate">Добавить книгу
     </b-button>
 
+    <!--    <img :src="card.url" alt="rr" v-for="card in getCardInfo" :key="getCardInfo.id"/>-->
     <b-row align-v="center" class="mt-2 h-auto">
-
       <cardItem v-for="card in getCardInfo" :key="getCardInfo.id"
                 class="h-8000 mt-lg-2 mb-lg-3 mr-lg-auto ml-lg-auto mt-md-3 ml-sm-2 mr-sm-2 ml-md-1 mt-sm-3  shadow"
                 :img-src="card.url"
                 :name="card.name"
                 :author="card.author"
+                :id='card.id'
       >
-<!--        <template v-slot:body style="margin-top: 50px">
-          <p>
-            Оценка
-          </p>
-        </template>-->
+        <!--        <template v-slot:body style="margin-top: 50px">
+                  <p>
+                    Оценка
+                  </p>
+                </template>-->
       </cardItem>
     </b-row>
     <b-pagination
@@ -53,7 +54,7 @@ export default {
   data() {
     return {
       currentPage: 1,
-      rows: 1,
+      rows: 10,
       perPage: 3
     }
   },

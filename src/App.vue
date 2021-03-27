@@ -2,21 +2,20 @@
   <div id="app">
 
     <b-navbar toggleable="lg" type="data" variant="success" class="bg-light">
-      <b-navbar-brand href="#" to="/">Библиотвека</b-navbar-brand>
+      <b-navbar-brand href="#" to="/">Библиотека</b-navbar-brand>
 
-      <!--      <b-button v-if="isAdmin" class="my-2 my-sm-0 ml-5" to="/admin">Admin</b-button>-->
+<!--            <b-button v-if="isAdmin" class="my-2 my-sm-0 ml-5" to="/admin">Admin</b-button>-->
 
       <b-dropdown v-if="isAdmin" variant="primaty" right text="Администрирование">
         <b-dropdown-item to="/admin/userlist">Пользователи</b-dropdown-item>
         <b-dropdown-item to="/admin/rolelist">Роли</b-dropdown-item>
         <b-dropdown-divider></b-dropdown-divider>
-        <b-dropdown-item>Книги</b-dropdown-item>
+<!--        <b-dropdown-item>Книги</b-dropdown-item>-->
         <b-dropdown-item to="/admin/authorList">Авторы</b-dropdown-item>
         <b-dropdown-item to="/admin/genreList">Жанры</b-dropdown-item>
       </b-dropdown>
 
 <!--      <b-button class="my-2 my-sm-0 ml-2" variant="primaty" @click="getLocalStoreInfo">LocaleStore</b-button>-->
-
 
       <b-collapse id="nav-collapse" is-nav>
 <!--        <b-navbar-nav>
@@ -30,6 +29,11 @@
                       <b-form-input size="sm" class="mr-sm-2" placeholder="Я ищу..."></b-form-input>
                       <b-button size="sm" class="my-2 my-sm-0" type="submit">Поиск</b-button>
                     </b-nav-form>-->
+
+          <b-button class="my-2 my-sm-0 mr-3"
+                    variant="primaty"
+                    to="/myProfile">{{this.getLocalStoreName}}
+          </b-button>
 
           <b-button v-if="isAuth === false" v-b-modal.modal-center style="margin-left: 5px"
                     class="my-2 my-sm-0 mr-3 bg-primary"
@@ -73,7 +77,7 @@ export default {
     headComponent,
     Modal
   },
-  computed: mapGetters(['isAdmin', 'isAuth']),
+  computed: mapGetters(['isAdmin', 'isAuth', 'getLocalStoreName']),
   data() {
     return {
       jk: false,

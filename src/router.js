@@ -8,6 +8,7 @@ import roleContent from "@/components/Administration/Role/roleContent";
 import boorCreate from "@/components/Administration/Book/BookCreate";
 import GenreList from "@/components/Administration/Genre/GenreList";
 import AuthorList from "@/components/Administration/Author/AuthorList";
+import ProfileContent from "@/components/Profile/ProfileContent";
 
 export default new VueRouter({
     mode: "history",
@@ -56,6 +57,11 @@ export default new VueRouter({
             path: "/admin/authorList",
             name: 'authorList',
             component: AuthorList
+        },
+        {
+            path: "/myProfile",
+            name: 'myProfile',
+            component: ProfileContent
         }
     ]
 })

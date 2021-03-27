@@ -1,7 +1,7 @@
 <template>
   <b-card
-      :img-src="this.imgSrc"
-      img-alt="Info"
+      :img-src="imgSrc"
+      :img-alt="defaultImg"
       img-top
       style="max-width:15rem; height: 600px;"
       class="md-2"
@@ -21,8 +21,22 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+import logoImg from "@/assets/logo.png"
 
 export default {
-  props: ['name', 'author', 'imgSrc']
+  props: ['name', 'author', 'imgSrc', 'id'],
+  data() {
+    return {
+      defaultImg: require('@/assets/logo.png')
+    }
+  },
+  methods: {
+    ...mapActions(['downloadBook']),
+    downloadBook(id) {
+      console.log(id)
+      this.downloadBook(id)
+    }
+  }
 }
 </script>
