@@ -9,6 +9,7 @@ import boorCreate from "@/components/Administration/Book/BookCreate";
 import GenreList from "@/components/Administration/Genre/GenreList";
 import AuthorList from "@/components/Administration/Author/AuthorList";
 import ProfileContent from "@/components/Profile/ProfileContent";
+import BookInfo from "@/components/Book/BookInfo";
 
 export default new VueRouter({
     mode: "history",
@@ -62,6 +63,11 @@ export default new VueRouter({
             path: "/myProfile",
             name: 'myProfile',
             component: ProfileContent
+        },
+        {
+            path: "/BookInfo/:id",
+            name: 'BookInfo',
+            component: BookInfo
         }
     ]
 })

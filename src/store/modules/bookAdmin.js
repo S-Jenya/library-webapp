@@ -23,8 +23,6 @@ export default {
             state.cardInfo = []
         },
         swapData(state, data) {
-            console.log("swapData")
-            console.log(data)
             data.element.url = data.url
         }
     },
@@ -62,19 +60,11 @@ export default {
                     console.log(error.response.data);
                 });
 
-            console.log(this.state)
-
-            console.log("FIRST response")
-            console.log(response)
-             response.data.forEach(element => {
-                console.log(element)
+            response.data.forEach(element => {
                 axios.get(element.url)
                     .then(response => {
                         let url = response.data.items[0].volumeInfo.imageLinks.smallThumbnail
-                        console.log("HER 1")
                         ctx.commit("swapData", {element: element, url: url});
-                        // element.url = url
-                        console.log("HER 2")
                     })
                     .catch(error => {
                         console.log("Произошла ошибка:")

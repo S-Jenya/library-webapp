@@ -1,23 +1,25 @@
 <template>
-  <b-card
-      :img-src="imgSrc"
-      :img-alt="defaultImg"
-      img-top
-      style="max-width:15rem; height: 600px;"
-      class="md-2"
-  >
-    <b-card-title>
-      <h5>{{ name }}</h5>
-    </b-card-title>
+  <a href="" @click="$router.push('/BookInfo/' + id)">
+    <b-card
+        :img-src="imgSrc"
+        img-alt="Картинка"
+        img-top
+        style="max-width:15rem; height: 600px;"
+        class="md-2"
+    >
+      <b-card-title>
+        <h5>{{ name }}</h5>
+      </b-card-title>
 
-    <b-card-text>
-      <slot name="body"/>
-      {{ author }}
-    </b-card-text>
-    <template #footer>
-      <b-button variant="primaty">Применить</b-button>
-    </template>
-  </b-card>
+      <b-card-text>
+        <slot name="body"/>
+        {{ author }}
+      </b-card-text>
+      <template #footer>
+        <b-button variant="primaty">Применить</b-button>
+      </template>
+    </b-card>
+  </a>
 </template>
 
 <script>
