@@ -45,12 +45,22 @@ export default {
 
         },
 
+        /*isAuth() {
+            if(localStorage.length > 1) {
+                return true
+            } else {
+                return false;
+            }
+        },*/
+
         getLocalStoreName() {
             if(localStorage.length > 1) {
                 let user = JSON.parse(localStorage.getItem('user'));
                 return user.name
             }
         }
+
+
     },
 
     mutations: {
