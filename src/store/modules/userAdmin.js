@@ -45,13 +45,12 @@ export default {
 
         },
 
-        /*isAuth() {
-            if(localStorage.length > 1) {
-                return true
-            } else {
-                return false;
+        getAuthIdUser() {
+            let user = JSON.parse(localStorage.getItem('user'));
+            if(user !== null) {
+                return user.idUser;
             }
-        },*/
+        },
 
         getLocalStoreName() {
             if(localStorage.length > 1) {

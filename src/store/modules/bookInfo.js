@@ -90,6 +90,59 @@ export default {
 
                 });
 
+        },
+
+        async deleteBook(ctx, data) {
+            let isErrorExist = false
+            let response = await AXIOS.delete('/admin/book/deleteBook/' + data.id,
+                {
+                    headers: authHeader()
+                })
+                .catch(error => {
+                    isErrorExist = true
+                    console.log(error);
+                })
+                .then(res => {
+                    if (!isErrorExist) {
+                        let message = res.data.message
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
+                });
+        },
+
+        async addComment(ctx, data) {
+            console.log(data);
+
+            let isErrorExist = false
+            let user = JSON.parse(localStorage.getItem('user'));
+            let idUser = user.idUser;
+            let response = await AXIOS.post('/comment/addComment',
+                {
+                    idUser: idUser,
+                    idBook: data.idBook,
+                    text: data.text
+                }, {
+                    headers: authHeader()
+                })
+                .catch(error => {
+                    isErrorExist = true
+                    console.log(error);
+                })
+                .then(res => {
+                    ctx.dispatch("loadBookInfo");
+                    if (!isErrorExist) {
+                        let message = res.data.message
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
+                });
         }
     }
 }
