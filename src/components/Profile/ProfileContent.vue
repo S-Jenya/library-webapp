@@ -1,7 +1,6 @@
 <template>
   <div>
-    <h1>Мой профиль</h1>
-    <div class="center-block w-75 ml-auto mr-auto">
+    <div class="center-block w-75 ml-auto mr-auto mt-5">
       <b-tabs v-if="isLoadDataProfile" content-class="mt-3" fill>
         <b-tab title="Профиль" active >
           <div class="mt-3 center-block w-75 ml-auto mr-auto container offset">

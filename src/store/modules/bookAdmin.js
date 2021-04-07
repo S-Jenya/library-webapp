@@ -29,10 +29,10 @@ export default {
 
     actions: {
 
-        async uploadBook(ctx, data) {
+        async uploadBookInetImage(ctx, data) {
             console.log(data)
             let isErrorExist = false
-            let response = await AXIOS.post('/admin/uploadBook',
+            let response = await AXIOS.post('/admin/uploadBookInetImage',
                 data,
                 {
                     headers: authHeader()
@@ -46,7 +46,28 @@ export default {
                 .then(res => {
                     if (!isErrorExist) {
                         let message = res.data.message
-                        window.location.href = "http://localhost:4000/";
+                        window.location.href = "/";
+                    }
+                });
+        },
+
+        async uploadBookUserImage(ctx, data) {
+            console.log(data)
+            let isErrorExist = false
+            let response = await AXIOS.post('/admin/uploadBookUserImage',
+                data,
+                {
+                    headers: authHeader()
+                    , "Content-Type": "multipart/form-data"
+                }).catch(error => {
+                console.log(error.response.data);
+                let erMes = document.getElementById('idBookError')
+                erMes.innerText = error.response.data.message
+            })
+                .then(res => {
+                    if (!isErrorExist) {
+                        let message = res.data.message
+                        window.location.href = "/";
                     }
                 });
         },

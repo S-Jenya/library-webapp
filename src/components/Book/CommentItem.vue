@@ -11,7 +11,7 @@
           </div>
           <div v-if="isAdmin || (idUser === getAuthIdUser)" class="col-md-0 col-lg-0">
             <span aria-hidden="true" class="pull-right">&#9998;</span>
-            <span aria-hidden="true" class="pull-right">&#10006;</span>
+            <span aria-hidden="true" class="pull-right" @click="delCommentFunc(idBook, idComment)" style="cursor: pointer;">&#10006;</span>
           </div>
         </div>
       </b-container>
@@ -24,12 +24,40 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex";
+import {mapActions, mapGetters} from "vuex";
 
 export default {
-  props: ['idBook', 'idUser', 'role', 'name', 'text', 'date'],
+  props: ['idBook', 'idComment', 'idUser', 'role', 'name', 'text', 'date'],
   name: "CommentItem",
-  computed: mapGetters(['isAuth', 'isAdmin', 'getAuthIdUser'])
+  computed: mapGetters(['isAuth', 'isAdmin', 'getAuthIdUser']),
+  methods: {
+    ...mapActions(['deleteComment']),
+    delCommentFunc(idBook, idComment) {
+      let message = 'Удалить комментарий?\nПодтвердите действие!'
+      this.$bvModal.msgBoxConfirm(message, {
+        title: 'Удаление комментария',
+        size: 'lg',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'Удалить',
+        cancelTitle: 'Отменить',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+          .then(value => {
+            if (value) {
+              this.deleteComment({
+                idBook: idBook,
+                idComment: idComment,
+                vm: this})
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+    }
+  }
 }
 </script>
 

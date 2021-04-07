@@ -7,6 +7,7 @@ import genreAdmin from "@/store/modules/genreAdmin";
 import authorAdmin from "@/store/modules/authorAdmin";
 import bookInfo from "@/store/modules/bookInfo";
 import Profile from "@/store/modules/Profile";
+import CommentAdmin from "@/store/modules/CommentAdmin";
 
 Vue.use(Vuex);
 
@@ -19,6 +20,7 @@ export default new Vuex.Store({
         genreAdmin,
         authorAdmin,
         bookInfo,
-        Profile
+        Profile,
+        CommentAdmin
     }
 });

@@ -1,14 +1,15 @@
 <template>
   <b-container class="mt-2 w-50 align-content-center">
     <h1>Новая книга</h1>
-    <form @submit.prevent="uploadData" enctype="multipart/form-data">
+    <form enctype="multipart/form-data">
       <div class="form-group">
         <div id="idBookError" style="color: red"></div>
         <p><label>Наименование</label>
-          <input id="name" type="text" class="form-control" v-model="name"/>
+          <input id="name" type="text" class="form-control" v-model="name" pattern="[а-яА-Я\s]+" required/>
         </p>
         <p><label>Описание</label>
-          <input id="description" type="text" class="form-control" v-model="description"/>
+          <input id="description" type="text" class="form-control" v-model="description" pattern="[а-яА-Я\s]+"
+                 required/>
         </p>
         <label>Жанр</label>
         <p>
@@ -20,22 +21,25 @@
         <label>Автор</label>
         <p>
           <select class="w-75" id="author">
-            <option v-for="author in getAuthor" :value="author.idAuthor">{{ author.firstName }} {{ author.lastName }}
-              {{ author.patronymic }}
+            <option v-for="author in getAuthor" :value="author.idAuthor">
+              {{ author.lastName }} {{ author.firstName }} {{ author.patronymic }}
             </option>
           </select>
         </p>
 
-        <!--        <p><label>Обложка</label>-->
-        <!--          <input id="cover" type="file" ref="uploadImage" @change="onImageUpload()" class="form-control h-50" required/>-->
-        <!--        </p>-->
-                <p>
-                  <label>Файл</label>
-                  <input id="fileBook" type="file" ref="uploadContent" @change="onContentUpload()" class="form-control h-50"
-                         required/>
-                <p>
-        <b-button type="submit">Добавить</b-button>
-        </p>
+        <div class="border p-4 mb-3 rounded">
+          <label>Обложка</label>
+          <b-checkbox v-model="options" class="mt-2 mb-2"> Скачать обложку с интернета</b-checkbox>
+          <div v-if="!options">
+            <input id="cover" type="file" ref="uploadImage" class="form-control h-50" required/>
+          </div>
+        </div>
+        <div class="border p-4 mb-3 rounded">
+          <label>Файл</label>
+          <input id="fileBook" type="file" ref="uploadContent" class="form-control h-50" required/>
+        </div>
+        <b-button type="button" @click="uploadData()">Добавить</b-button>
+        
       </div>
     </form>
   </b-container>
@@ -50,6 +54,7 @@ export default {
   name: "BookCreate",
   computed: mapGetters(['getGenres', 'getAuthor']),
   data: () => ({
+    options: false,
     baseData: undefined,
     formImageData: undefined,
     formContentData: undefined,
@@ -57,70 +62,44 @@ export default {
     description: ""
   }),
   methods: {
-    ...mapActions(['uploadBook', 'getGenreList', 'getAuthorList']),
-
-    onImageUpload() {
-      let file = this.$refs.uploadImage.files[0]
-      this.formImageData = new FormData()
-      this.formImageData.append("fileImage", file)
-      console.log(file.type)
-      if (file.type !== "image/png") {
-        console.log("Недопустимый формат файла")
-        this.formImageData = undefined
-      }
-    },
-    onContentUpload() {
-      let file = this.$refs.uploadContent.files[0]
-      this.formContentData = new FormData()
-      this.formContentData.append("fileContent", file)
-      console.log(file.type)
-      if (file.type !== "application/pdf") {
-        console.log("Недопустимый формат файла")
-        this.formContentData = undefined
-      }
-    },
+    ...mapActions(['uploadBookInetImage', 'uploadBookUserImage', 'getGenreList', 'getAuthorList']),
 
     uploadData() {
-      // if(this.formImageData.data.type)
-      // let file1 = this.$refs.uploadImage.files[0]
-      let file2 = this.$refs.uploadContent.files[0]
-      this.baseData = new FormData();
+      this.baseData = new FormData()
       this.baseData.append("name", this.name)
       this.baseData.append("description", this.description)
       this.baseData.append("genre", document.getElementById('genre').value)
       this.baseData.append("author", document.getElementById('author').value)
-      //this.baseData.append("fileImage", file1)
 
-      // начало загрузки
-      // let resp = axios.get("https://www.googleapis.com/books/v1/volumes?q=" + this.name + ":keyes&key=AIzaSyDLaeHSZsg9jUMoISejLAhSyaFJUZ7F8D0")
-      //     .then(response => {
-      //       console.log("Поиск прошёл успешно. Получены данные:")
-      //       console.log(response.data.items[0].volumeInfo.imageLinks)
-      //       console.log(response.data.items[0].volumeInfo.imageLinks.smallThumbnail)
-      //
-      //       /*let url = response.data.items[0].volumeInfo.imageLinks.smallThumbnail
-      //       axios.get(url, {
-      //         headers: {"Access-Control-Allow-Origin": "http://localhost:4000"}
-      //       })
-      //           .then(getResponse => {
-      //             console.log("GET response")
-      //             console.log(getResponse)
-      //           })*/
-      //       // this.baseData.append("fileContent", response)
-      //     })
-      //     .catch(error => {
-      //       console.log("Произошла ошибка:")
-      //       console.log(error)
-      //     })
+      if (!this.options) {
+        let fileImage = this.$refs.uploadImage.files[0]
+        if (fileImage.type !== "image/png" && fileImage.type !== "image/jpeg") {
+          let erMes = document.getElementById('idBookError')
+          erMes.innerText = "Недопустимый формат обложки. Используйте jpeg/png"
+          this.baseData = undefined
+          console.log(this.baseData)
+          return
+        }
+        this.baseData.append("fileImage", fileImage)
+      }
 
-      // конец
-        this.baseData.append("fileContent", file2)
+      let fileContent = this.$refs.uploadContent.files[0]
+      console.log(fileContent)
+      if (fileContent.type !== "application/pdf") {
+        let erMes = document.getElementById('idBookError')
+        erMes.innerText = "Недопустимый формат книги. Используйте pdf"
+        this.baseData = undefined
+        console.log(this.baseData)
+        return
+      }
+      this.baseData.append("fileContent", fileContent)
 
-      console.log(this.baseData)
-      this.baseData.forEach(i => {
-        console.log(i)
-      })
-      this.uploadBook(this.baseData);
+      // this.baseData.forEach(i => console.log(i))
+      if (this.options) {
+        this.uploadBookInetImage(this.baseData);
+      } else {
+        this.uploadBookUserImage(this.baseData)
+      }
     },
   },
   mounted() {

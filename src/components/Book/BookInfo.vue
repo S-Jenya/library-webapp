@@ -13,27 +13,20 @@
         <p>
           Описание: {{ getBookInfo.description }}
         </p>
-        <b-button v-if="isAuth" variant="success" @click="downLoadBookFunc(getBookInfo.id)">Скачать</b-button>
         <small v-if="!isAuth" style="color: red">Для скачивания документа войдите в систему</small>
-        <b-button v-if="isAdmin" variant="danger" @click="deleteBookFunc(getBookInfo.id)">Удалить</b-button>
+        <b-button v-if="isAuth" variant="success" class="mr-2" @click="downLoadBookFunc(getBookInfo.id)">Скачать
+        </b-button>
+        <b-button v-if="isAdmin" variant="info" class="mr-2" @click="editBookFunc(getBookInfo.id)">Редактировать
+        </b-button>
+        <b-button v-if="isAdmin" variant="danger" class="mr-2" @click="deleteBookFunc(getBookInfo.id)">Удалить
+        </b-button>
       </div>
     </div>
 
-
     <h1>Комментарии</h1>
-<!--    <div v-for="comment in getBookInfo.comments">
-      {{ comment.idComment }}
-      {{ comment.date }}
-      <p>
-        {{ comment.user.name }}
-      </p>
-      <p>
-        {{ comment.text }}
-      </p>
-    </div>-->
-
     <CommentItem v-for="comment in getBookInfo.comments" class="mb-3"
-                 :idBook="comment.idComment"
+                 :id-book="getBookInfo.id"
+                 :idComment="comment.idComment"
                  :id-user="comment.user.idUser"
                  :role="comment.user.role.name"
                  :name="comment.user.name"
@@ -47,8 +40,8 @@
       </div>
       <div class="col col-lg-2 text-center">
         <b-button
-                  variant="outline-primary"
-                  @click="addCommentFunc(getBookInfo.id)"
+            variant="outline-primary"
+            @click="addCommentFunc(getBookInfo.id)"
         >Отправить
         </b-button>
       </div>
@@ -57,11 +50,7 @@
     <div v-if="!isAuth" class="text-center mb-3">
       <p style="color: red">Войдите в систему, чтобы оставить свой комментарий</p>
     </div>
-<!--        <pre>
-          <code>
-          {{ getBookInfo }}
-          </code>
-        </pre>-->
+
   </div>
 
 </template>
@@ -74,7 +63,8 @@ export default {
   name: "BookInfo",
   components: {CommentItem},
   data: () => ({
-    textMessage: ''
+    textMessage: '',
+    isDeleteBook: ''
   }),
   computed: mapGetters(['getBookInfo', 'isAuth', 'isAdmin']),
   methods: {
@@ -83,7 +73,27 @@ export default {
       this.downloadBook({idBook: idBook, vm: this});
     },
     deleteBookFunc(idBook) {
-      this.deleteBook({id: idBook, vm: this})
+      let message = 'Удаление книги влечёт удаление всех комментариев и истории скачиваний.\nПодтвердите действие!'
+      this.$bvModal.msgBoxConfirm(message, {
+        title: 'Удаление книги',
+        size: 'lg',
+        buttonSize: 'sm',
+        okVariant: 'danger',
+        okTitle: 'Удалить',
+        cancelTitle: 'Отменить',
+        footerClass: 'p-2',
+        hideHeaderClose: false,
+        centered: true
+      })
+          .then(value => {
+            if (value) {
+              this.deleteBook({id: idBook, vm: this})
+            }
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
     },
     addCommentFunc(idBook) {
       if (this.textMessage !== '') {
@@ -93,6 +103,9 @@ export default {
           vm: this
         })
       }
+    },
+    editBookFunc(idBook) {
+
     }
   },
   mounted() {
@@ -102,5 +115,7 @@ export default {
 </script>
 
 <style scoped>
-
+.button {
+  padding: 5px;
+}
 </style>

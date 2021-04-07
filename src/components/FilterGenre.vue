@@ -2,7 +2,8 @@
   <div class="mb-2">
     <label>Фильтр по жанрам</label>
     <p>
-      <input v-for="genre in getGenres" type="button" :id="genre.idGenre" name="categories" :value="genre.name"
+      <input id="idInputFilter" v-for="genre in getGenres" type="button" :id="genre.idGenre" name="categories"
+             :value="genre.name"
              class="bg-light rounded-pill pl-3 pr-3 pt-1 pb-1 mr-2 mb-2">
     </p>
   </div>
@@ -15,9 +16,7 @@ export default {
   name: "FilterGenre",
   computed: mapGetters(['getGenres']),
   data() {
-    return {
-
-    }
+    return {}
   },
   methods: {
     ...mapActions(['getGenreList'])
@@ -28,6 +27,9 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+#idInputFilter {
+  outline: 0;
+  outline-offset: 0;
+}
 </style>
