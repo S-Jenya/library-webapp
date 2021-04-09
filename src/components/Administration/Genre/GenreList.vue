@@ -78,16 +78,6 @@ export default {
   mounted() {
     this.getGenreList()
   }
-  /*, watch: {
-    isGenreModalOpen: function () {
-      let serverResult =  this.getGenreStatus
-      if (this.isGenreModalOpen === false) {
-        if(serverResult.status === "200") {
-          this.testF('success', 'Запись успешно добавлена. СТАТУС 200')
-        }
-      }
-    }
-  }*/
 }
 </script>
 

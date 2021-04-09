@@ -4,34 +4,56 @@
       <b-container class="ml-0 pl-0 ">
         <div class="row">
           <div class="col">
-            {{name}}
+            {{ name }}
             <span v-if="this.role === 'ADMIN'" aria-hidden="true" class="pull-right">&#9989;</span>
             <br>
-            {{date}}
+            {{ date }}
           </div>
           <div v-if="isAdmin || (idUser === getAuthIdUser)" class="col-md-0 col-lg-0">
-            <span aria-hidden="true" class="pull-right">&#9998;</span>
-            <span aria-hidden="true" class="pull-right" @click="delCommentFunc(idBook, idComment)" style="cursor: pointer;">&#10006;</span>
+            <span aria-hidden="true" class="pull-right"
+                  style="cursor: pointer;"
+                  @click="showEditInput = !showEditInput">&#9998;</span>
+            <span aria-hidden="true" class="pull-right"
+                  style="cursor: pointer;"
+                  @click="delCommentFunc(idBook, idComment)">
+              &#10006;</span>
           </div>
         </div>
       </b-container>
     </b-card-sub-title>
 
     <b-card-text>
-      {{ text }}
+      <div v-if="!showEditInput">
+        {{ text }} <br>
+      </div>
+      <div v-if="showEditInput">
+        <input type="text" class="w-50 mr-3" v-model="strVal"/>
+        <b-button type="button" class="bg-primary mr-2" @click="editCommentFunc()">Применить</b-button>
+        <b-button  variant="outline-primary" class="mr-2" @click="showEditInput = !showEditInput">Отменить</b-button>
+      </div>
     </b-card-text>
   </b-card>
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
+import EditCommentModal from "@/components/Book/EditCommentModal";
 
 export default {
-  props: ['idBook', 'idComment', 'idUser', 'role', 'name', 'text', 'date'],
+  props: ['ctxMain', 'idBook', 'idComment', 'idUser', 'role', 'name', 'text', 'date'],
   name: "CommentItem",
-  computed: mapGetters(['isAuth', 'isAdmin', 'getAuthIdUser']),
+  components: {EditCommentModal},
+  data() {
+    return {
+      isModalEditCommentOpen: true,
+      showEditInput: false,
+      strVal: this.text
+    }
+  },
+  computed: mapGetters(['isAuth', 'isAdmin', 'getAuthIdUser', 'getCtxModalCom']),
   methods: {
-    ...mapActions(['deleteComment']),
+    ...mapActions(['deleteComment', 'editComment']),
+    ...mapMutations(['setValUpdate']),
     delCommentFunc(idBook, idComment) {
       let message = 'Удалить комментарий?\nПодтвердите действие!'
       this.$bvModal.msgBoxConfirm(message, {
@@ -50,12 +72,28 @@ export default {
               this.deleteComment({
                 idBook: idBook,
                 idComment: idComment,
-                vm: this})
+                vm: this
+              })
             }
           })
           .catch(err => {
             console.log(err)
           })
+    },
+    editCommentFunc() {
+      this.editComment({
+        idBook: this.idBook,
+        idComment: this.idComment,
+        text: this.strVal,
+        vm: this,
+        mode: this.showEditInput
+      });
+      this.showEditInput = false
+    },
+  },
+  watch: {
+    text: function (newVal) {
+      this.strVal = newVal
     }
   }
 }

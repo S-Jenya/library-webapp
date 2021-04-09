@@ -3,11 +3,21 @@ import authHeader from "@/authHeader"
 import axios from "axios";
 
 export default {
-    state: {},
+    state: {
+        ctxModal: ''
+    },
 
-    getters: {},
+    getters: {
+        getCtxModalCom(state) {
+            return state.ctxModal
+        }
+    },
 
-    mutations: {},
+    mutations: {
+        setCtxModalCom(state, ctx) {
+            state.ctxModal = ctx
+        }
+    },
 
     actions: {
 
@@ -54,6 +64,32 @@ export default {
                     if (!isErrorExist) {
                         ctx.dispatch("loadBookInfo", data.idBook);
                         let message = "Комментарий успешно удалён!"
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
+                });
+        },
+
+        async editComment(ctx, data) {
+            let isErrorExist = false
+            let response = await AXIOS.post('/comment/editComment',
+                {
+                    idComment: data.idComment,
+                    text: data.text
+                }, {
+                    headers: authHeader()
+                })
+                .catch(error => {
+                    isErrorExist = true
+                    console.log(error);
+                })
+                .then(res => {
+                    if (!isErrorExist) {
+                        ctx.dispatch("loadBookInfo", data.idBook);
+                        let message = res.data.message
                         setTimeout(() => (data.vm.$bvToast.toast(message, {
                             title: 'Успех',
                             variant: 'success',

@@ -4,12 +4,16 @@ import axios from "axios";
 
 export default {
     state: {
-        cardInfo: []
+        cardInfo: [],
+        editBookModal: []
     },
 
     getters: {
         getCardInfo(state) {
             return state.cardInfo
+        },
+        getEditBookDataModal(state) {
+            return state.editBookModal
         }
     },
 
@@ -24,6 +28,10 @@ export default {
         },
         swapData(state, data) {
             data.element.url = data.url
+        },
+        setEditDataModal(state, data) {
+            state.editBookModal.title = data.title
+            state.editBookModal.text = data.text
         }
     },
 
@@ -98,6 +106,19 @@ export default {
             console.log(response)
             ctx.commit("cleanCardInfo");
             ctx.commit("fillCardInfo", response.data);
+        },
+        async updBookData(ctx, data) {
+            let response = await AXIOS.post('/admin/updBookData',
+                data,
+                {
+                    headers: authHeader()
+                    , "Content-Type": "multipart/form-data"
+                }).catch(error => {
+                console.log(error.response.data);
+            })
+                .then(res => {
+                    console.log(res);
+                });
         }
     }
 }

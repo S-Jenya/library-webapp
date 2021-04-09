@@ -4,20 +4,23 @@ import axios from "axios";
 
 export default {
     state: {
-        bookInfo: []
+        bookInfo: [],
+        isDataBokInfoLoad: false
     },
 
     getters: {
         getBookInfo(state) {
-            console.log("RETURN: ");
-            console.log(state.bookInfo);
             return state.bookInfo
+        },
+        isLoadBokInfo(state) {
+            return state.isDataBokInfoLoad
         }
     },
 
     mutations: {
         async fillBookInfo(state, data) {
             state.bookInfo = data;
+            state.isDataBokInfoLoad = true
         },
         cleanBookInfo(state) {
             state.bookInfo = []
@@ -26,6 +29,7 @@ export default {
 
     actions: {
         async loadBookInfo(ctx, idBook) {
+            let innerResponse
 
             let response = await AXIOS.get('/book/getInfo/' + idBook,
                 {
@@ -34,6 +38,7 @@ export default {
                 .catch(error => {
                     console.log(error.response.data);
                 }).then(response => {
+                    innerResponse = response
                     if (!response.data.fromData) {
 
                         axios.get(response.data.url)
@@ -46,9 +51,10 @@ export default {
                                 console.log(error)
                             })
                     }
-                    ctx.commit("cleanBookInfo");
-                    ctx.commit("fillBookInfo", response.data);
+
                 });
+            ctx.commit("cleanBookInfo");
+            ctx.commit("fillBookInfo", innerResponse.data);
         },
 
         async downloadBook(ctx, data) {
