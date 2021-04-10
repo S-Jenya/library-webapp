@@ -1,5 +1,5 @@
 <template>
-  <b-card class="md-2">
+  <b-card :id="idItem + index" class="md-2">
     <b-card-sub-title class="mb-2">
       <b-container class="ml-0 pl-0 ">
         <div class="row">
@@ -37,17 +37,16 @@
 
 <script>
 import {mapActions, mapGetters, mapMutations} from "vuex";
-import EditCommentModal from "@/components/Book/EditCommentModal";
 
 export default {
-  props: ['ctxMain', 'idBook', 'idComment', 'idUser', 'role', 'name', 'text', 'date'],
+  props: ['ctxMain', 'idBook', 'idComment', 'idUser', 'role', 'name', 'text', 'date', 'index'],
   name: "CommentItem",
-  components: {EditCommentModal},
   data() {
     return {
       isModalEditCommentOpen: true,
       showEditInput: false,
-      strVal: this.text
+      strVal: this.text,
+      idItem: 'commentItem_'
     }
   },
   computed: mapGetters(['isAuth', 'isAdmin', 'getAuthIdUser', 'getCtxModalCom']),
@@ -90,6 +89,12 @@ export default {
       });
       this.showEditInput = false
     },
+  },
+  mounted() {
+    if(this.idUser === this.getAuthIdUser){
+      let id = this.idItem + this.index;
+      document.getElementById(id).style.backgroundColor = "rgba(207,233,250,0.3)"
+    }
   },
   watch: {
     text: function (newVal) {

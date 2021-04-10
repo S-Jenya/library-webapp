@@ -1,14 +1,15 @@
 <template>
   <b-container class="mt-2 w-50 align-content-center">
     <h1>Новая книга</h1>
-    <form enctype="multipart/form-data">
+    <form enctype="multipart/form-data"  @submit.prevent="uploadData">
       <div class="form-group">
         <div id="idBookError" style="color: red"></div>
         <p><label>Наименование</label>
-          <input id="name" type="text" class="form-control" v-model="name" pattern="[а-яА-Я\s]+" required/>
+          <input id="name" type="text" class="form-control" v-model="name"  required/>
+<!--          pattern='[А-Я][а-я\s]+'-->
         </p>
         <p><label>Описание</label>
-          <input id="description" type="text" class="form-control" v-model="description" pattern="[а-яА-Я\s]+"
+          <input id="description" type="text" class="form-control" v-model="description"
                  required/>
         </p>
         <label>Жанр</label>
@@ -38,7 +39,7 @@
           <label>Файл</label>
           <input id="fileBook" type="file" ref="uploadContent" class="form-control h-50" required/>
         </div>
-        <b-button type="button" @click="uploadData()">Добавить</b-button>
+        <b-button type="submit">Добавить</b-button>
         
       </div>
     </form>

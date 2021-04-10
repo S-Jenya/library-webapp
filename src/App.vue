@@ -4,8 +4,6 @@
     <b-navbar toggleable="lg" type="data" variant="success" class="bg-light">
       <b-navbar-brand href="#" to="/">Библиотека</b-navbar-brand>
 
-<!--            <b-button v-if="isAdmin" class="my-2 my-sm-0 ml-5" to="/admin">Admin</b-button>-->
-
       <b-dropdown v-if="isAdmin" variant="primaty" right text="Администрирование">
         <b-dropdown-item to="/admin/userlist">Пользователи</b-dropdown-item>
         <b-dropdown-item to="/admin/rolelist">Роли</b-dropdown-item>
@@ -47,7 +45,11 @@
                     class="my-2 my-sm-0 ml-1 bg-primary"
                     type="button" @click="logout">Выйти
           </b-button>
-          <b-button v-if="isAuth === false" class="bg-primary" id="show-btn" type="button" to="/registration">Регистрация</b-button>
+          <b-button v-if="isAuth === false" class="bg-primary"
+                    id="show-btn"
+                    type="button"
+                    to="/registration">Регистрация
+          </b-button>
           <modal
               v-if="isModalOpen"
               title="Вход в систему"

@@ -1,9 +1,12 @@
 <template>
   <b-container class="mt-5">
-    <div class="row mb-4">
-      <div class="col-md-8 offset-md-2">
-        <b-input class="mr-sm-2" placeholder="Я ищу..."></b-input>
-        <!--          <b-button size="sm" class="my-2 my-sm-0" type="submit">Поиск</b-button>-->
+    <div class="row mb-4 offset-md-1">
+      <div class="col-md-8 ">
+        <b-input class="mr-sm-2" placeholder="Я ищу..." v-model="searchText"></b-input>
+      </div>
+      <div class="col-md-4">
+        <b-button class="bg-primary my-1 my-sm-0 mr-2" @click="search">Поиск</b-button>
+        <b-button class="my-1 my-sm-0" variant="outline-primary" @click="cancelSearch">Сбросить</b-button>
       </div>
     </div>
     <FilterGenre/>
@@ -15,21 +18,24 @@
 
     <!--    <img :src="card.url" alt="rr" v-for="card in getCardInfo" :key="getCardInfo.id"/>-->
     <b-row align-v="center" class="mt-2 h-auto">
+
+      <div v-if="getCardInfo.length === 0" class="text-center h-8000 mt-lg-2 mb-lg-3 mr-lg-auto ml-lg-auto mt-md-3
+       ml-sm-2 mr-sm-2 ml-md-1 mt-sm-3">
+        <h1 class="text-center">Результат поиска</h1>
+        Ниего не найдено
+      </div>
+
       <cardItem v-for="card in getCardInfo" :key="getCardInfo.id"
                 class="h-8000 mt-lg-2 mb-lg-3 mr-lg-auto ml-lg-auto mt-md-3 ml-sm-2 mr-sm-2 ml-md-1 mt-sm-3  shadow"
                 :img-src="card.url"
                 :name="card.name"
                 :author="card.author"
                 :id='card.id'
-      >
-        <!--        <template v-slot:body style="margin-top: 50px">
-                  <p>
-                    Оценка
-                  </p>
-                </template>-->
-      </cardItem>
+      />
     </b-row>
-    <b-pagination
+
+<!--    Блок пагинации-->
+<!--    <b-pagination
         v-model="currentPage"
         :total-rows="rows"
         :per-page="perPage"
@@ -38,7 +44,7 @@
         next-text=">"
         last-text="Конец"
         @input="paginate(currentPage)"
-    ></b-pagination>
+    />-->
   </b-container>
 </template>
 
@@ -53,20 +59,39 @@ export default {
   computed: mapGetters(['isAdmin', 'getCardInfo']),
   data() {
     return {
+      searchText: '',
+      displayCard: [],
       currentPage: 1,
-      rows: 10,
+      rows: 5,
       perPage: 3
     }
   },
   methods: {
-    ...mapActions(['loadCardList']),
-
+    ...mapActions(['filterCard']),
+    search() {
+      this.filterCard({
+        mode: "byName",
+        strSearch: this.searchText
+      })
+    },
+    cancelSearch() {
+      this.searchText = ""
+      this.filterCard({
+        mode: "all",
+        strSearch: "empty"
+      })
+    },
     paginate(currentPage) {
-      alert(currentPage)
+      let start = (currentPage - 1) * this.perPage
+      this.displayCard = this.getCardInfo.slice(start, start + 6)
     }
   },
   mounted() {
-    this.loadCardList()
+    this.filterCard({
+      mode: "all",
+      strSearch: "empty"
+    })
+   // this.displayCard = this.getCardInfo.slice(0, 6)
   }
 };
 </script>

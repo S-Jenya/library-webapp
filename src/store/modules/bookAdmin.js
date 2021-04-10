@@ -80,8 +80,46 @@ export default {
                 });
         },
 
-        async loadCardList(ctx) {
-            let response = await AXIOS.get('/cards/getListCardsTwo',
+        async updBookData(ctx, data) {
+            let isErrorExist = false
+            let response = await AXIOS.post('/admin/updBookData',
+                data.baseData,
+                {
+                    headers: authHeader()
+                    , "Content-Type": "multipart/form-data"
+                })
+                .catch(error => {
+                    isErrorExist = true
+                    console.log(error.response.data);
+                }).then(response => {
+                    console.log("УСПЕХ");
+                    console.log(response.data);
+                    if (!isErrorExist) {
+                        ctx.dispatch("loadBookInfo", data.idBook);
+                        data.vm.$bvModal.hide('idEditBookModal')
+                        let message = "Унига успешно обновлена!"
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
+                });
+        },
+
+        async filterCard(ctx, data) {
+            ctx.commit("cleanCardInfo");
+            let link
+            if(data.mode === "all") {
+                link = "/book/searchBook/all/"
+            }
+            if(data.mode === "byName") {
+                link = "/book/searchBook/byName/"
+            }
+            if(data.mode === "byGenreName") {
+                link = "/book/searchBook/byGenreName/"
+            }
+            let response = await AXIOS.get(link + data.strSearch,
                 {
                     headers: authHeader()
                 })
@@ -101,24 +139,7 @@ export default {
                     })
             })
 
-
-            console.log(" SEC response")
-            console.log(response)
-            ctx.commit("cleanCardInfo");
             ctx.commit("fillCardInfo", response.data);
-        },
-        async updBookData(ctx, data) {
-            let response = await AXIOS.post('/admin/updBookData',
-                data,
-                {
-                    headers: authHeader()
-                    , "Content-Type": "multipart/form-data"
-                }).catch(error => {
-                console.log(error.response.data);
-            })
-                .then(res => {
-                    console.log(res);
-                });
         }
     }
 }

@@ -36,7 +36,7 @@
       <h1>Комментарии</h1>
     <div v-if="isLoadBokInfo">
 
-      <CommentItem  v-for="comment in getBookInfo.comments" class="mb-3"
+      <CommentItem  v-for="(comment, index) in getBookInfo.comments" class="mb-3"
                    :id-book="getBookInfo.id"
                    :idComment="comment.idComment"
                    :id-user="comment.user.idUser"
@@ -44,6 +44,7 @@
                    :name="comment.user.name"
                    :date="comment.date"
                    :text="comment.text"
+                    :index="index"
       />
     </div>
 
@@ -72,11 +73,10 @@
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import CommentItem from "@/components/Book/CommentItem";
 import EditBookModal from "@/components/Book/EditBookModal";
-import EditCommentModal from "@/components/Book/EditCommentModal";
 
 export default {
   name: "BookInfo",
-  components: {CommentItem, EditBookModal, EditCommentModal},
+  components: {CommentItem, EditBookModal},
   data: () => ({
     textMessage: '',
     isDeleteBook: '',

@@ -7,10 +7,10 @@
       <div class="form-group p-3">
         <div id="idBookError" style="color: red"></div>
         <p><label>Наименование</label>
-          <input id="name" type="text" class="form-control" v-model="strNameVal" pattern="[а-яА-Я\s]+" required/>
+          <input id="name" type="text" class="form-control" v-model="strNameVal" required/>
         </p>
         <p><label>Описание</label>
-          <input id="description" type="text" class="form-control" v-model="strDescription" pattern="[а-яА-Я\s]+"
+          <input id="description" type="text" class="form-control" v-model="strDescription"
                  required/>
         </p>
         <label>Жанр</label>
@@ -38,7 +38,8 @@
             <div id="idBookImageError" style="color: red"></div>
             <b-checkbox v-model="options" class="mt-2 mb-2"> Скачать обложку с интернета</b-checkbox>
             <div v-if="!options">
-              <input id="cover" type="file" ref="uploadImage" class="form-control h-50" required/>
+              <input id="cover" type="file" ref="updImage" @change="clearBookImageError" class="form-control h-50"
+                     required/>
             </div>
           </div>
         </div>
@@ -50,7 +51,7 @@
           <div class="border p-4 mb-3 rounded">
             <label>Файл</label>
             <div id="idBookContentError" style="color: red"></div>
-            <input id="fileBook" type="file" ref="uploadContent" class="form-control h-50" required/>
+            <input id="fileBook" type="file" ref="updContent" class="form-control h-50" required/>
           </div>
         </div>
       </div>
@@ -80,17 +81,18 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['getGenreList', 'getAuthorList', 'updBookData']),
+    ...mapActions(['getGenreList', 'getAuthorList', 'updBookData', 'filterCard']),
     updBookDataFunc() {
       this.baseData = new FormData()
-      this.baseData.append("name", String(this.nameBook))
+      this.baseData.append("idBook", this.idBook)
+      this.baseData.append("name", this.strNameVal)
       this.baseData.append("description", this.strDescription)
       this.baseData.append("genre", document.getElementById('genre').value)
       this.baseData.append("author", document.getElementById('author').value)
       console.log(this.baseData)
       if (this.updImg) {
         if (!this.options) { // загружать файл самому
-          let fileImage = this.$refs.uploadImage.files[0]
+          let fileImage = this.$refs.updImage.files[0]
           if (fileImage === undefined) { // файл не загружен
             let erMes = document.getElementById('idBookImageError')
             erMes.innerText = "Выберите файл!"
@@ -103,51 +105,60 @@ export default {
             this.baseData = undefined
             return
           }
-          fileImage = "GoogleAPI"
           this.baseData.append("fileImage", fileImage)
         } else {
-          let fileImage = "No"
-          this.baseData.append("fileImage", fileImage)
+          this.baseData.append("imgFromEthernet", "true")
         }
+      } else {
+        this.baseData.append("fileImage", "NO_DATA")
       }
 
-        if (this.updContent) {
-          let fileContent = this.$refs.uploadContent.files[0]
-          if (fileContent === undefined) { // файл не загружен
-            let erMes = document.getElementById('idBookContentError')
-            erMes.innerText = "Выберите файл!"
-            this.baseData = undefined
-            return;
-          }
-          if (fileContent.type !== "application/pdf") {
-            let erMes = document.getElementById('idBookError')
-            erMes.innerText = "Недопустимый формат книги. Используйте pdf"
-            this.baseData = undefined
-            return
-          }
-          this.baseData.append("fileContent", fileContent)
-        } else {
-          let fileContent = "No"
-          this.baseData.append("fileContent", fileContent)
+      if (this.updContent) {
+        let fileContent = this.$refs.updContent.files[0]
+        if (fileContent === undefined) { // файл не загружен
+          let erMes = document.getElementById('idBookContentError')
+          erMes.innerText = "Выберите файл!"
+          this.baseData = undefined
+          return;
         }
+        if (fileContent.type !== "application/pdf") { // неверный формат файла
+          let erMes = document.getElementById('idBookError')
+          erMes.innerText = "Недопустимый формат книги. Используйте pdf"
+          this.baseData = undefined
+          return
+        }
+        this.baseData.append("fileContent", fileContent)
+      } else {
+        this.baseData.append("fileContent", "NO_DATA")
+      }
 
-       console.log(this.baseData)
-        this.updBookData({data: this.baseData})
-      }
+      this.updBookData({
+        baseData: this.baseData,
+        idBook: this.idBook,
+        vm: this
+      })
     },
-    mounted() {
-      this.getGenreList()
-      this.getAuthorList()
+    clearBookImageError() {
+      document.getElementById('idBookImageError').innerText = ""
+    }
+  },
+  mounted() {
+    this.filterCard({
+      mode: "all",
+      strSearch: "empty"
+    })
+    this.getAuthorList()
+    this.getGenreList()
+  },
+  watch: {
+    nameBook: function (newVal) {
+      this.strNameVal = newVal
     },
-    watch: {
-      nameBook: function (newVal) {
-        this.strNameVal = newVal
-      },
-      Description: function (newVal) {
-        this.strDescription = newVal
-      }
+    Description: function (newVal) {
+      this.strDescription = newVal
     }
   }
+}
 </script>
 
 <style scoped>
