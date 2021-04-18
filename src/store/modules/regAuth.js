@@ -38,7 +38,6 @@ export default {
                     password: data.password
                 }
             ).then(result => {
-                console.log('result from server:\n', result);
                 if (result.status === 200) {
                     document.location.href = "/"
                 }
@@ -49,7 +48,6 @@ export default {
         },
 
         async loginSubmitHandler(ctx, data) {
-            console.log(data)
             let response = await AXIOS.post('/authenticate',
                 {
                     login: data.login,

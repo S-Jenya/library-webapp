@@ -12,6 +12,14 @@
         :mode="getGenreModal.mode"
         @close="isGenreModalOpen = false"
     />
+
+    <BookByGenre
+        v-if="BookByGenreModalOpen"
+        @close="BookByGenreModalOpen = false"
+        :id-genre="genreIdInfo"
+        :name-genre="genreNameInfo"
+    />
+
     <table class="table mt-3 w-50 text-center ml-auto mr-auto">
       <thead>
       <tr>
@@ -22,7 +30,12 @@
       </thead>
       <tr v-for="(genre, index) in getGenres" :key="getGenres.idGenre">
         <td>{{ index + 1 }}</td>
-        <td>{{ genre.name }}</td>
+        <td><a
+            @click="openBookByGenreModal(genre.idGenre, genre.name)"
+            style="color: blue; cursor: pointer;"
+            title="Список книг с текущем жанром"
+        > {{ genre.name }} </a></td>
+
         <td>
           <b-button class="my-2 my-sm-0 bg-primary mr-2" @click="openEditGenreModal(genre.idGenre, genre.name)">
             Редактировать
@@ -38,19 +51,28 @@
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import GenreModal from "@/components/Administration/Genre/GenreModal";
 import toastFunc from "@/toastFunc";
+import BookByGenre from "@/components/Administration/Genre/BookByGenre";
 
 export default {
   name: "GenreList",
-  components: {GenreModal, toastFunc},
+  components: {GenreModal, toastFunc, BookByGenre},
   computed: mapGetters(['getGenres', 'getRoleModal', "getGenreModal"]),
   data() {
     return {
-      isGenreModalOpen: true
+      isGenreModalOpen: true,
+      BookByGenreModalOpen: true,
+      genreIdInfo: "",
+      genreNameInfo: ""
     }
   },
   methods: {
     ...mapActions(['getGenreList', 'deleteGenre']),
     ...mapMutations(['setGenreModal']),
+    openBookByGenreModal(id, txt) {
+      this.genreIdInfo = id
+      this.genreNameInfo = txt
+      this.$bvModal.show('idBookByGenre')
+    },
     openNewGenreModal() {
       // this.isGenreModalOpen = true
       this.setGenreModal({

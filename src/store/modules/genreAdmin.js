@@ -49,6 +49,12 @@ export default {
 
     actions: {
         async getGenreList(ctx) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
+
             let response = await AXIOS.get('/getGenres',
                 {
                     headers: authHeader()

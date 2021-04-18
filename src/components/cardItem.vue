@@ -16,7 +16,7 @@
         {{ author }}
       </b-card-text>
       <template #footer>
-        <b-button variant="primaty">Применить</b-button>
+        <b-button variant="primaty">Открыть</b-button>
       </template>
     </b-card>
   </a>

@@ -52,7 +52,6 @@ export default {
   computed: mapGetters(['isAuth', 'isAdmin', 'getAuthIdUser', 'getCtxModalCom']),
   methods: {
     ...mapActions(['deleteComment', 'editComment']),
-    ...mapMutations(['setValUpdate']),
     delCommentFunc(idBook, idComment) {
       let message = 'Удалить комментарий?\nПодтвердите действие!'
       this.$bvModal.msgBoxConfirm(message, {

@@ -110,13 +110,13 @@ export default {
         async filterCard(ctx, data) {
             ctx.commit("cleanCardInfo");
             let link
-            if(data.mode === "all") {
+            if (data.mode === "all") {
                 link = "/book/searchBook/all/"
             }
-            if(data.mode === "byName") {
+            if (data.mode === "byName") {
                 link = "/book/searchBook/byName/"
             }
-            if(data.mode === "byGenreName") {
+            if (data.mode === "byGenreName") {
                 link = "/book/searchBook/byGenreName/"
             }
             let response = await AXIOS.get(link + data.strSearch,
@@ -130,16 +130,21 @@ export default {
             response.data.forEach(element => {
                 axios.get(element.url)
                     .then(response => {
-                        let url = response.data.items[0].volumeInfo.imageLinks.smallThumbnail
-                        ctx.commit("swapData", {element: element, url: url});
+                        if(response.data.items !== undefined) {
+                            let url = response.data.items[0].volumeInfo.imageLinks.smallThumbnail
+                            ctx.commit("swapData",
+                                {
+                                    element: element,
+                                    url:  url
+                                });
+                        }
                     })
                     .catch(error => {
                         console.log("Произошла ошибка:")
                         console.log(error)
                     })
             })
-
             ctx.commit("fillCardInfo", response.data);
-        }
+        },
     }
 }

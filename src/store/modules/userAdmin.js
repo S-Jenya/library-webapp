@@ -138,8 +138,29 @@ export default {
 
         getLocalStoreInfo() {
             console.log(JSON.parse(localStorage.getItem('user')))
-        }
+        },
 
+        checkAuthData() {
+            let token = JSON.parse(localStorage.getItem('user'))
+            console.log(token)
+            if (token !== null) {
+                token = token.jwt
+                let jsonJWT = JSON.parse(atob(token.split('.')[1]));
+                console.log(jsonJWT)
+
+                let finish = jsonJWT.exp  * 1000
+                let curDate = Date.now()
+                console.log("finish: \t" + finish + "\nCurDate:\t" + curDate)
+
+                if(finish >= curDate){
+                    return false
+                } else {
+                    return  true
+                }
+
+            }
+            return  false
+        }
 
     }
 }

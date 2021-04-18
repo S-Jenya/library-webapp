@@ -69,7 +69,7 @@ import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "EditBookModal",
-  props: ['idBook', 'nameBook', 'Description', 'Author', 'Genre'],
+  props: ['idBook', 'nameBook', 'description', 'author', 'genre'],
   computed: mapGetters(['getGenres', 'getAuthor']),
   data() {
     return {
@@ -77,7 +77,7 @@ export default {
       updContent: false,
       options: false,
       strNameVal: this.nameBook,
-      strDescription: this.Description
+      strDescription: this.description
     }
   },
   methods: {
@@ -154,7 +154,7 @@ export default {
     nameBook: function (newVal) {
       this.strNameVal = newVal
     },
-    Description: function (newVal) {
+    description: function (newVal) {
       this.strDescription = newVal
     }
   }

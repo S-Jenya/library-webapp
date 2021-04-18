@@ -17,7 +17,7 @@
     </b-button>
 
     <!--    <img :src="card.url" alt="rr" v-for="card in getCardInfo" :key="getCardInfo.id"/>-->
-    <b-row align-v="center" class="mt-2 h-auto">
+    <b-row align-v="center" class="mt-2 h-auto justify-content-center align-items-center">
 
       <div v-if="getCardInfo.length === 0" class="text-center h-8000 mt-lg-2 mb-lg-3 mr-lg-auto ml-lg-auto mt-md-3
        ml-sm-2 mr-sm-2 ml-md-1 mt-sm-3">
