@@ -13,7 +13,7 @@
         <b-dropdown-item to="/admin/genreList">Жанры</b-dropdown-item>
       </b-dropdown>
 
-      <b-button class="my-2 my-sm-0 ml-2" variant="primaty" @click="getLocalStoreInfo">LocaleStore</b-button>
+<!--      <b-button class="my-2 my-sm-0 ml-2" variant="primaty" @click="getLocalStoreInfo">LocaleStore</b-button>-->
 
       <b-collapse id="nav-collapse" is-nav>
 <!--        <b-nav-item class="my-2 my-sm-0 ml-2" @click="getLocalStoreInfo">LocaleStore</b-nav-item>-->

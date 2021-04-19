@@ -3,11 +3,22 @@
     <div class="center-block w-75 ml-auto mr-auto mt-5">
       <b-tabs v-if="isLoadDataProfile" content-class="mt-3" fill>
         <b-tab title="Профиль" active>
-          <div class="mt-3 center-block w-75 ml-auto mr-auto container offset">
-            <h1><p class="text-center">Личные данные пользователя</p></h1>
-            <p>Имя: <input v-if="isLoadDataProfile" type="text" disabled :value="getUserDataProfile.user.name"/></p>
-            <p>Логин: <input v-if="isLoadDataProfile" type="text" disabled :value="getUserDataProfile.user.login"/></p>
-            <p>Email: <input v-if="isLoadDataProfile" type="text" disabled :value="getUserDataProfile.user.email"/></p>
+          <h1><p class="text-center">Личные данные пользователя</p></h1>
+          <div class="  mt-3 center-block text-center w-75 ml-auto mr-auto container offset">
+            <div class="top-cover center-block mt-4 rounded border ml-auto mr-auto mr-2 mb-2 p-3 w-50">
+              <p>Имя: <input v-if="isLoadDataProfile" type="text" disabled :value="getUserDataProfile.user.name"/></p>
+              <p>Логин: <input v-if="isLoadDataProfile" type="text" disabled :value="getUserDataProfile.user.login"/>
+              </p>
+              <p>Email: <input v-if="isLoadDataProfile" type="text" disabled :value="getUserDataProfile.user.email"/>
+              </p>
+              <b-button variant="info" class="mt-2" @click="$bvModal.show('idEditBookModal')">
+                Изменить личные данные
+              </b-button>
+              <br>
+              <b-button variant="danger" class="mt-2" @click="deleteBookFunc(getBookInfo.id)">
+                Изменить пароль
+              </b-button>
+            </div>
           </div>
         </b-tab>
         <b-tab title="Загрузки">

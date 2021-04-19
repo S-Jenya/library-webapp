@@ -19,11 +19,13 @@
     <!--    <img :src="card.url" alt="rr" v-for="card in getCardInfo" :key="getCardInfo.id"/>-->
     <b-row align-v="center" class="mt-2 h-auto justify-content-center align-items-center">
 
-      <div v-if="getCardInfo.length === 0" class="text-center h-8000 mt-lg-2 mb-lg-3 mr-lg-auto ml-lg-auto mt-md-3
+      <div v-if="getCardInfo.length === 0 && !bookIsLoading" class="text-center h-8000 mt-lg-2 mb-lg-3 mr-lg-auto ml-lg-auto mt-md-3
        ml-sm-2 mr-sm-2 ml-md-1 mt-sm-3">
         <h1 class="text-center">Результат поиска</h1>
         Ниего не найдено
       </div>
+
+      <Loader v-if="bookIsLoading" class="text-center" />
 
       <cardItem v-for="card in getCardInfo" :key="getCardInfo.id"
                 class="h-8000 mt-lg-2 mb-lg-3 mr-lg-auto ml-lg-auto mt-md-3 ml-sm-2 mr-sm-2 ml-md-1 mt-sm-3  shadow"
@@ -51,19 +53,21 @@
 <script>
 import cardItem from "@/components/cardItem";
 import FilterGenre from "@/components/FilterGenre";
+import Loader from "@/components/Loader"
 import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "mainContent",
-  components: {cardItem, FilterGenre},
-  computed: mapGetters(['isAdmin', 'getCardInfo']),
+  components: {cardItem, FilterGenre, Loader},
+  computed: mapGetters(['isAdmin', 'getCardInfo', 'bookIsLoading']),
   data() {
     return {
       searchText: '',
       displayCard: [],
       currentPage: 1,
       rows: 5,
-      perPage: 3
+      perPage: 3,
+      loading: true
     }
   },
   methods: {
@@ -91,6 +95,7 @@ export default {
       mode: "all",
       strSearch: "empty"
     })
+    // this.loading = false
    // this.displayCard = this.getCardInfo.slice(0, 6)
   }
 };

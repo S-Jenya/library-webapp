@@ -1,14 +1,15 @@
 <template>
   <div class="mb-2 offset-md-1">
-    <p class="text-center">Фильтр по жанрам</p>
+    <p class="text-center">Фильтр: {{genreInputName}}</p>
     <p>
       <input type="button"
              value="Всe"
              class="bg-light rounded-pill pl-3 pr-3 pt-1 pb-1 mr-2 mb-2"
              :style="styleData"
              @click="allGenre"
+             @mouseover="(event) => changeColor(event, styleData, -1)"
+             @mouseleave="() => originalColor(styleData, -1)"
       >
-
 
       <input v-for="(genre, index) in getGenres" :key="getGenres.idGenre" type="button"
              :id="genre.idGenre"
@@ -16,8 +17,8 @@
              name="categories"
              class="bg-light rounded-pill pl-3 pr-3 pt-1 pb-1 mr-2 mb-2"
              :style="styleData"
-             v-on:mouseover="(event) => changeColor(event, styleData, index)"
-             v-on:mouseleave="() => originalColor(styleData, index)"
+             @mouseover="(event) => changeColor(event, styleData, index)"
+             @mouseleave="() => originalColor(styleData, index)"
              @click="filterByGenreCardFunc(genre.name, index)">
     </p>
   </div>
@@ -36,7 +37,8 @@ export default {
         color: 'black',
         hover: false,
         outline: 'none'
-      }
+      },
+      genreInputName: ''
 
     }
   },
@@ -52,12 +54,15 @@ export default {
     },
     filterByGenreCardFunc(genreName, id) {
       document.getElementsByTagName("input")[id + 2].style.color = "#008cf0"
+      let text = document.getElementsByTagName("input")[id + 2]
+      this.genreInputName = "\"" + text.value + "\""
       this.filterCard({
         mode: "byGenreName",
         strSearch: genreName
       })
     },
     allGenre() {
+      this.genreInputName = "\"Все\""
       this.filterCard({
         mode: "all",
         strSearch: "empty"
@@ -65,6 +70,7 @@ export default {
     }
   },
   mounted() {
+    this.genreInputName = "\"Все\""
     this.getGenreList()
   }
 }

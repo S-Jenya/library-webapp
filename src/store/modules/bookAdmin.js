@@ -5,7 +5,8 @@ import axios from "axios";
 export default {
     state: {
         cardInfo: [],
-        editBookModal: []
+        editBookModal: [],
+        isLoading: true
     },
 
     getters: {
@@ -14,6 +15,9 @@ export default {
         },
         getEditBookDataModal(state) {
             return state.editBookModal
+        },
+        bookIsLoading(state) {
+            return state.isLoading
         }
     },
 
@@ -32,6 +36,12 @@ export default {
         setEditDataModal(state, data) {
             state.editBookModal.title = data.title
             state.editBookModal.text = data.text
+        },
+        finishBookLoad(state) {
+            state.isLoading = false
+        },
+        startBookLoad(state) {
+            state.isLoading = true
         }
     },
 
@@ -108,6 +118,7 @@ export default {
         },
 
         async filterCard(ctx, data) {
+            ctx.commit("startBookLoad")
             ctx.commit("cleanCardInfo");
             let link
             if (data.mode === "all") {
@@ -145,6 +156,7 @@ export default {
                     })
             })
             ctx.commit("fillCardInfo", response.data);
+            ctx.commit("finishBookLoad")
         },
     }
 }
