@@ -160,6 +160,34 @@ export default {
 
             }
             return  false
+        },
+
+        async changeUserPassword(ctx, data) {
+            let isErrorExist = false
+            let user = JSON.parse(localStorage.getItem('user'));
+            let idUser = user.idUser;
+            await AXIOS.get('/user/changePassword/' + idUser + '/' + data.pwdOld + '/' + data.pwdNew,
+                {
+                    headers: authHeader()
+                })
+                .catch(error => {
+                    isErrorExist = true
+                    console.log(error.response.data.message);
+                    let erMes = document.getElementById('idPwdChangeError')
+                    erMes.innerText = error.response.data.message
+                })
+                .then(res => {
+                    ctx.dispatch("loadUserData");
+                    if (!isErrorExist) {
+                        let message = res.data.message
+                        data.vm.$bvModal.hide('idPwdChangeModal')
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
+                });
         }
 
     }

@@ -11,13 +11,31 @@
               </p>
               <p>Email: <input v-if="isLoadDataProfile" type="text" disabled :value="getUserDataProfile.user.email"/>
               </p>
-              <b-button variant="info" class="mt-2" @click="$bvModal.show('idEditBookModal')">
+
+              <b-button variant="info" class="mt-2" @click="$bvModal.show('idPerDataChangeModal')">
                 Изменить личные данные
               </b-button>
-              <br>
-              <b-button variant="danger" class="mt-2" @click="deleteBookFunc(getBookInfo.id)">
+
+              <PersonalDataChangeModal
+                  v-if="PerDataChangeModalOpen"
+                  @close="PerDataChangeModalOpen = false"
+                  :id-user="getUserDataProfile.user.idUser"
+                  :login-user="getUserDataProfile.user.login"
+                  :name-user="getUserDataProfile.user.name"
+                  :email-user="getUserDataProfile.user.email"
+              />
+
+              <b-button variant="danger" class="mt-2" @click="$bvModal.show('idPwdChangeModal')">
                 Изменить пароль
               </b-button>
+
+              <PasswordChangeModal
+                v-if="PwdChangeModalOpen"
+                @close="PwdChangeModalOpen = false"
+              />
+
+
+
             </div>
           </div>
         </b-tab>
@@ -70,11 +88,20 @@
 </template>
 
 <script>
+import PasswordChangeModal from "@/components/Profile/PasswordChangeModal";
+import PersonalDataChangeModal from "@/components/Profile/PersonalDataChangeModal";
 import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "ProfileContent",
+  components: {PasswordChangeModal, PersonalDataChangeModal},
   computed: mapGetters(['getUserDataProfile', 'isLoadDataProfile']),
+  data() {
+    return {
+      PwdChangeModalOpen: true,
+      PerDataChangeModalOpen: true
+    }
+  },
   methods: {
     ...mapActions(['loadUserData'])
   },
