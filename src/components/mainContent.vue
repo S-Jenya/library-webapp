@@ -28,7 +28,7 @@
       <Loader v-if="bookIsLoading" class="text-center" />
 
       <cardItem v-for="card in getCardInfo" :key="getCardInfo.id"
-                class="h-8000 mt-lg-2 mb-lg-3 mr-lg-auto ml-lg-auto mt-md-3 ml-sm-2 mr-sm-2 ml-md-1 mt-sm-3  shadow"
+                class="mt-lg-2 mb-lg-3 mr-lg-auto ml-lg-auto mt-md-3 ml-sm-2 mr-sm-2 ml-md-1 mt-sm-3  shadow"
                 :img-src="card.url"
                 :name="card.name"
                 :author="card.author"

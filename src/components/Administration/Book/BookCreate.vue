@@ -8,9 +8,15 @@
           <input id="name" type="text" class="form-control" v-model="name"
                  pattern="[0-9|А-Я|а-я|A-Z|a-z|.|,|\s]+" required/>
         </p>
+        <p><label>Год издания</label>
+          <input id="year" type="number" min="0" max="3000" step="1" value="2021" class="form-control"
+                 v-model="year"
+                 required/>
+        </p>
         <p><label>Описание</label>
-          <input id="description" type="text" class="form-control" v-model="description"
-                 pattern="[0-9|А-Я|а-я|A-Z|a-z|.|,|\s]+" required/>
+          <textarea id="description" type="text" class="form-control text-break" v-model="description"
+                    style="height: 5rem;"
+                    pattern="[0-9|А-Я|а-я|A-Z|a-z|.|,|\s]+" required/>
         </p>
         <label>Жанр</label>
         <p>
@@ -60,7 +66,8 @@ export default {
     formImageData: undefined,
     formContentData: undefined,
     name: "",
-    description: ""
+    description: "",
+    year: 0
   }),
   methods: {
     ...mapActions(['uploadBookInetImage', 'uploadBookUserImage', 'getGenreList', 'getAuthorList']),
@@ -68,6 +75,7 @@ export default {
     uploadData() {
       this.baseData = new FormData()
       this.baseData.append("name", this.name)
+      this.baseData.append("year", this.year)
       this.baseData.append("description", this.description)
       this.baseData.append("genre", document.getElementById('genre').value)
       this.baseData.append("author", document.getElementById('author').value)
@@ -95,7 +103,7 @@ export default {
       }
       this.baseData.append("fileContent", fileContent)
 
-      // this.baseData.forEach(i => console.log(i))
+       this.baseData.forEach(i => console.log(i))
       if (this.options) {
         this.uploadBookInetImage(this.baseData);
       } else {

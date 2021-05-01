@@ -9,8 +9,15 @@
         <p><label>Наименование</label>
           <input id="name" type="text" class="form-control" v-model="strNameVal" required/>
         </p>
+        <p><label>Год издания</label>
+          <input id="year" type="number" min="0" max="3000" step="1" value="2021" class="form-control"
+                 v-model="strYear"
+                 required/>
+        </p>
         <p><label>Описание</label>
-          <input id="description" type="text" class="form-control" v-model="strDescription"
+          <textarea id="description" type="text" class="form-control text-break" v-model="strDescription"
+                    style="height: 6rem;"
+                    pattern="[0-9|А-Я|а-я|A-Z|a-z|.|,|\s]+"
                  required/>
         </p>
         <label>Жанр</label>
@@ -55,10 +62,10 @@
           </div>
         </div>
       </div>
-
+      <div id="idEditBookError" style="color: red"></div>
     </div>
     <template #modal-footer>
-      <b-button @click="$bvModal.hide('idEditCommentModal')">Закрыть</b-button>
+      <b-button @click="$bvModal.hide('idEditBookModal')">Закрыть</b-button>
       <b-button type="button" @click="updBookDataFunc()">Применить</b-button>
     </template>
   </b-modal>
@@ -69,7 +76,7 @@ import {mapActions, mapGetters} from "vuex";
 
 export default {
   name: "EditBookModal",
-  props: ['idBook', 'nameBook', 'description', 'author', 'genre'],
+  props: ['idBook', 'nameBook', 'year', 'description', 'author', 'genre'],
   computed: mapGetters(['getGenres', 'getAuthor']),
   data() {
     return {
@@ -77,6 +84,7 @@ export default {
       updContent: false,
       options: false,
       strNameVal: this.nameBook,
+      strYear: this.year,
       strDescription: this.description
     }
   },
@@ -86,6 +94,7 @@ export default {
       this.baseData = new FormData()
       this.baseData.append("idBook", this.idBook)
       this.baseData.append("name", this.strNameVal)
+      this.baseData.append("year", this.strYear)
       this.baseData.append("description", this.strDescription)
       this.baseData.append("genre", document.getElementById('genre').value)
       this.baseData.append("author", document.getElementById('author').value)
@@ -153,6 +162,9 @@ export default {
   watch: {
     nameBook: function (newVal) {
       this.strNameVal = newVal
+    },
+    year: function (newVal) {
+      this.strYear = newVal
     },
     description: function (newVal) {
       this.strDescription = newVal

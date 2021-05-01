@@ -66,9 +66,11 @@
       <b-button type="submit">GO</b-button>
     </form>-->
     <router-view/>
-
-
+    <div class="footer fixed-bottom p-3 mt-5" style="background-color: #f8f9fa; bottom: 0px; " >
+      <small style="margin-left: 5%"> Сёмин Евгений. СТП. Курсовая работа. 2021г.</small>
+    </div>
   </div>
+
 </template>
 
 <script>

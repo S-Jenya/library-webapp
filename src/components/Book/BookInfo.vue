@@ -6,26 +6,26 @@
       </div>
       <div v-if="isLoadBokInfo" class="col col-lg-8 col-sm-10 col-auto">
         <h2>{{ getBookInfo.name }}</h2>
-        <h5>{{ getBookInfo.author }}</h5>
-        <p>
-          Жанр: {{ getBookInfo.genre }}
-        </p>
-        <p>
-          Описание: {{ getBookInfo.description }}
-        </p>
+        <h2>{{ getBookInfo.author }}</h2>
+        <h5>Год издания:</h5> {{ getBookInfo.year }}
+        <h5>Жанр:</h5> {{ getBookInfo.genre }}
+        <h5>Описание:</h5> {{ getBookInfo.description }} <br/>
+
         <small v-if="!isAuth" style="color: red">Для скачивания документа войдите в систему</small>
-        <b-button v-if="isAuth" variant="success" class="mr-2" @click="downLoadBookFunc(getBookInfo.id)">Скачать
+        <b-button v-if="isAuth" variant="success" class="mr-2" @click="downLoadBookFunc(getBookInfo.id)">
+          Скачать
         </b-button>
-        <!--        <b-button v-if="isAdmin" variant="info" class="mr-2" @click="editBookFunc(getBookInfo.id)">Редактировать-->
         <b-button v-if="isAdmin" variant="info" class="mr-2" @click="$bvModal.show('idEditBookModal')">
           Редактировать
         </b-button>
-        <b-button v-if="isAdmin" variant="danger" class="mr-2" @click="deleteBookFunc(getBookInfo.id)">Удалить
+        <b-button v-if="isAdmin" variant="danger" class="mr-2" @click="deleteBookFunc(getBookInfo.id)">
+          Удалить
         </b-button>
         <editBookModal
             v-if="isShowEditModal"
             :id-book="getBookInfo.id"
             :name-book="getBookInfo.name"
+            :year="getBookInfo.year"
             :description="getBookInfo.description"
             :author="getBookInfo.author"
             :genre="getBookInfo.genre"

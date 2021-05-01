@@ -101,6 +101,8 @@ export default {
                 .catch(error => {
                     isErrorExist = true
                     console.log(error.response.data);
+                    let erMes = document.getElementById('idEditBookError')
+                    erMes.innerText = error.response.data.message
                 }).then(response => {
                     console.log("УСПЕХ");
                     console.log(response.data);
