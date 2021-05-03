@@ -1,5 +1,5 @@
 <template>
-  <b-container class="mt-2 w-50 align-content-center">
+  <b-container class="mt-2 w-50 align-content-center ml-auto mr-auto w-100">
     <h1>Новая книга</h1>
     <form enctype="multipart/form-data" @submit.prevent="uploadData">
       <div class="form-group">

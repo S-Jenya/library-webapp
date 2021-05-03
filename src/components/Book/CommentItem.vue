@@ -26,10 +26,22 @@
       <div v-if="!showEditInput">
         {{ text }} <br>
       </div>
-      <div v-if="showEditInput">
-        <input type="text" class="w-50 mr-3" v-model="strVal"/>
-        <b-button type="button" class="bg-primary mr-2" @click="editCommentFunc()">Применить</b-button>
-        <b-button  variant="outline-primary" class="mr-2" @click="showEditInput = !showEditInput">Отменить</b-button>
+      <div v-if="showEditInput" class="row mt-1 mb-3">
+        <div class="col-12 mb-3 w-100
+                      col-sm-12
+                      col-md-12
+                      col-lg-9 pr-md-0
+                      col-xl-9">
+          <input type="text" class="w-100 mr-3" v-model="strVal"/>
+        </div>
+        <div class="col col-lg-2
+                  col-md-0 ml-md-0
+                   col-lg-3 pl-lg-0 pr-lg-0 text-lg-right
+                   col-xl-3  text-xl-right
+                  text-center">
+          <b-button type="button" class="bg-primary mr-2" @click="editCommentFunc()">Применить</b-button>
+          <b-button  variant="outline-primary" class="mr-2" @click="showEditInput = !showEditInput">Отменить</b-button>
+        </div>
       </div>
     </b-card-text>
   </b-card>

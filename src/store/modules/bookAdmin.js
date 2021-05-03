@@ -48,7 +48,11 @@ export default {
     actions: {
 
         async uploadBookInetImage(ctx, data) {
-            console.log(data)
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let response = await AXIOS.post('/admin/uploadBookInetImage',
                 data,
@@ -70,7 +74,11 @@ export default {
         },
 
         async uploadBookUserImage(ctx, data) {
-            console.log(data)
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let response = await AXIOS.post('/admin/uploadBookUserImage',
                 data,
@@ -91,6 +99,11 @@ export default {
         },
 
         async updBookData(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let response = await AXIOS.post('/admin/updBookData',
                 data.baseData,
@@ -104,8 +117,6 @@ export default {
                     let erMes = document.getElementById('idEditBookError')
                     erMes.innerText = error.response.data.message
                 }).then(response => {
-                    console.log("УСПЕХ");
-                    console.log(response.data);
                     if (!isErrorExist) {
                         ctx.dispatch("loadBookInfo", data.idBook);
                         data.vm.$bvModal.hide('idEditBookModal')
@@ -120,6 +131,11 @@ export default {
         },
 
         async filterCard(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             ctx.commit("startBookLoad")
             ctx.commit("cleanCardInfo");
             let link

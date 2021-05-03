@@ -1,11 +1,11 @@
 <template>
-  <a href="" @click="$router.push('/BookInfo/' + id)">
+  <router-link :to="this.URLtoBookInfo" >
     <b-card
         :img-src="imgSrc"
         img-alt="Картинка"
         img-top
-        style="max-width:15rem; height: 600px; max-height: 600px"
-        class="md-2"
+        style="max-width:15rem; height: 600px; max-height: 600px;"
+        class="md-2 "
     >
       <b-card-title>
         <h5>{{ name }}</h5>
@@ -19,7 +19,7 @@
         <b-button variant="primaty">Открыть</b-button>
       </template>
     </b-card>
-  </a>
+  </router-link>
 </template>
 
 <script>
@@ -30,7 +30,8 @@ export default {
   props: ['name', 'author', 'imgSrc', 'id'],
   data() {
     return {
-      defaultImg: require('@/assets/logo.png')
+      defaultImg: require('@/assets/logo.png'),
+      URLtoBookInfo: "/BookInfo/" + this.id
     }
   },
   methods: {

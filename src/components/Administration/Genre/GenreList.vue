@@ -1,6 +1,6 @@
 <template>
-  <div class="center-block w-75 ml-lg-auto mr-lg-auto">
-    <h1><p class="top-name center-block text-center">Администрирование жанрами</p></h1>
+  <div class="center-block w-75 ml-auto mr-auto">
+    <h1 class="top-name center-block text-center">Жанры</h1>
     <b-button style="margin-left: 5px" class="my-2 my-sm-0 bg-primary" @click="openNewGenreModal()">Новый жанр
     </b-button>
     <GenreModal
@@ -20,7 +20,7 @@
         :name-genre="genreNameInfo"
     />
 
-    <table class="table mt-3 w-50 text-center ml-auto mr-auto">
+    <table class="table mt-3 w-75 text-center ml-auto mr-auto">
       <thead>
       <tr>
         <th>Номер</th>
@@ -30,7 +30,7 @@
       </thead>
       <tr v-for="(genre, index) in getGenres" :key="getGenres.idGenre">
         <td>{{ index + 1 }}</td>
-        <td><a
+        <td class="text-center"><a
             @click="openBookByGenreModal(genre.idGenre, genre.name)"
             style="color: blue; cursor: pointer;"
             title="Список книг с текущем жанром"

@@ -8,6 +8,7 @@
         </template>
         <div class="d-block text-center">
           {{ text }} <input type="text" v-model="inputText">
+          <div id="idRoleError" style="color: red"></div>
         </div>
         <template #modal-footer>
           <b-button @click="$bvModal.hide('roleModal')">Закрыть</b-button>
@@ -63,7 +64,7 @@ export default {
           this.addRole({
             name: this.inputText
           })
-          this.addRoleFunc()
+          this.addRoleFunc({vm: this})
         } else if (this.mode === "1") {
           this.updNameRole({
             name: this.inputText
@@ -74,7 +75,7 @@ export default {
           };
           this.updRoleFunc(varData)
         }
-        this.closeModal();
+       // this.closeModal();
       }
     },
     closeModal() {

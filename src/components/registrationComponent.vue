@@ -1,8 +1,8 @@
 <template>
-  <b-container style="margin-top: 30px; width: 50%" align-v="center">
-    <h1>Регистрация</h1>
+  <b-container align-v="center" class="mt-3 row-cols-lg-1 row-cols-xl-1 row-cols-md-1 w-100">
+    <h1 class="text-center">Регистрация</h1>
     <form @submit.prevent="submitHandler">
-      <div class="form-group">
+      <div class="form-group center-block  w-100 ml-auto mr-auto container offset">
 
         <p><label>Имя</label>
           <input id="name" type="text" class="form-control"

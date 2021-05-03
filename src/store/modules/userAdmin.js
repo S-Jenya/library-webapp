@@ -71,7 +71,6 @@ export default {
         },
         fillUsers(state,data) {
             data.forEach(element => state.users.push(element));
-            console.log(state.users)
         },
         addRole(state, data) {
             this.nameNewRole = data.name;
@@ -93,28 +92,71 @@ export default {
 
     actions: {
         async loadRole(ctx) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let response = await AXIOS.get('/admin/getRole',
                 {
                     headers: authHeader()
                 }).catch(error => {
                 console.log(error.response.data);
             });
+            ctx.commit("clearListRole");
             ctx.commit("fillRol", response.data);
         },
         async loadUsers(ctx) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let response = await AXIOS.get('/admin/getUsers',
                 {
                     headers: authHeader()
-                }).catch(error => {
-                console.log(error.response.data);
-            });
+                })
+                .catch(error => {
+                    console.log(error.response.data);
+                });
             ctx.commit("cleanUserList");
             ctx.commit("fillUsers", response.data);
         },
-        async addRoleFunc(ctx) {
-            await AXIOS.post('/admin/addRole', {name: this.nameNewRole}, {headers: authHeader()});
+        async addRoleFunc(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
+            let isErrorExist = false
+            await AXIOS.post('/admin/addRole',
+                {name: this.nameNewRole},
+                {headers: authHeader()})
+                .catch(error => {
+                    isErrorExist = true
+                    console.log(error.response.data);
+                    let erMes = document.getElementById('idRoleError')
+                    erMes.innerText = error.response.data.message
+                }).then(response => {
+                    console.log(response.data);
+                    if (!isErrorExist) {
+                        ctx.dispatch("loadRole");
+                        data.vm.$bvModal.hide('roleModal')
+                        let message = response.data.message
+                        setTimeout(() => (data.vm.$bvToast.toast(message, {
+                            title: 'Успех',
+                            variant: 'success',
+                            solid: true
+                        })), 10)
+                    }
+                });
         },
         async updRoleFunc(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             await AXIOS.post('/admin/updRole', {
                     id: data.id,
                     name: data.name
@@ -122,6 +164,7 @@ export default {
                 {
                     headers: authHeader()
                 });
+            ctx.commit("clearListRole");
             ctx.dispatch("loadRole");
         },
 
@@ -142,15 +185,15 @@ export default {
 
         checkAuthData() {
             let token = JSON.parse(localStorage.getItem('user'))
-            console.log(token)
+            // console.log(token)
             if (token !== null) {
                 token = token.jwt
                 let jsonJWT = JSON.parse(atob(token.split('.')[1]));
-                console.log(jsonJWT)
+                // console.log(jsonJWT)
 
                 let finish = jsonJWT.exp  * 1000
                 let curDate = Date.now()
-                console.log("finish: \t" + finish + "\nCurDate:\t" + curDate)
+                // console.log("finish: \t" + finish + "\nCurDate:\t" + curDate)
 
                 if(finish >= curDate){
                     return false
@@ -163,6 +206,11 @@ export default {
         },
 
         async changeUserPassword(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let user = JSON.parse(localStorage.getItem('user'));
             let idUser = user.idUser;

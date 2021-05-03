@@ -45,6 +45,11 @@ export default {
 
     actions: {
         async getAuthorList(ctx) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let response = await AXIOS.get('/admin/getAuthors',
                 {
                     headers: authHeader()
@@ -56,6 +61,11 @@ export default {
         },
 
         async addAuthor(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let response = await AXIOS.post('/admin/addAuthor',
                 {
@@ -83,6 +93,11 @@ export default {
         },
 
         async editAuthor(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let response = await AXIOS.post('/admin/editAuthor',
                 {
@@ -111,6 +126,11 @@ export default {
         },
 
         async deleteAuthor(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let response = await AXIOS.delete('/admin/deleteAuthor/' + data.id,
                 {

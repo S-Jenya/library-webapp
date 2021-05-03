@@ -22,7 +22,11 @@ export default {
     actions: {
 
         async addComment(ctx, data) {
-            console.log(data);
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
 
             let isErrorExist = false
             let user = JSON.parse(localStorage.getItem('user'));
@@ -53,6 +57,11 @@ export default {
         },
 
         async deleteComment(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             const response = AXIOS.get('/comment/delComment/' + data.idComment, {
                 headers: authHeader()
@@ -74,6 +83,11 @@ export default {
         },
 
         async editComment(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let response = await AXIOS.post('/comment/editComment',
                 {

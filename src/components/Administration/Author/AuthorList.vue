@@ -1,6 +1,6 @@
 <template>
   <div class="center-block w-75 ml-auto mr-auto">
-    <h1><p class="top-name center-block text-center">Список авторов</p></h1>
+    <h1 class="top-name center-block text-center">Список авторов</h1>
     <b-button class="my-2 my-sm-0 bg-primary" @click="openAddAuthorModal()">Новый автор</b-button>
     <AuthorModal
         v-if="isModalOpen"
@@ -20,7 +20,7 @@
         :name-author="authorNameInfo"
     />
 
-    <table class="table mt-3 w-50 text-center ml-auto mr-auto">
+    <table class="table mt-3 w-75 text-center ml-auto mr-auto">
       <thead>
       <tr>
         <th>Номер</th>

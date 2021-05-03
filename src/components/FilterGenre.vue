@@ -1,10 +1,10 @@
 <template>
-  <div class="mb-2 offset-md-1">
+  <div class=" mb-2 md-1  col-lg-0 col-xl-0 mb-3" id="filterContainer">
     <p class="text-center">Фильтр: {{genreInputName}}</p>
     <p>
       <input type="button"
              value="Всe"
-             class="bg-light rounded-pill pl-3 pr-3 pt-1 pb-1 mr-2 mb-2"
+             class="bg-light rounded-pill pr-3 pt-1 pb-1 mr-2 mb-2"
              :style="styleData"
              @click="allGenre"
              @mouseover="(event) => changeColor(event, styleData, -1)"
@@ -15,7 +15,7 @@
              :id="genre.idGenre"
              :value="genre.name"
              name="categories"
-             class="bg-light rounded-pill pl-3 pr-3 pt-1 pb-1 mr-2 mb-2"
+             class="bg-light rounded-pill pr-3 pt-1 pb-1 mr-2 mb-2"
              :style="styleData"
              @mouseover="(event) => changeColor(event, styleData, index)"
              @mouseleave="() => originalColor(styleData, index)"

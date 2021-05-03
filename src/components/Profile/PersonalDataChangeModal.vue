@@ -7,30 +7,30 @@
 
       <form @submit.prevent="getRequest()">
         <div class="d-block text-center container">
-          <div class="row">
-            <div class="col">
-              <p><label>Имя: </label></p>
+          <div class="row-12">
+            <div class="col-4 text-left pr-sm-0">
+              <label>Имя: </label>
             </div>
-            <div class="col">
-              <input type="text" v-model="strName" pattern="[А-Я|а-я|A-Z|a-z|\s]+"/>
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col">
-              <p><label>Логин: </label></p>
-            </div>
-            <div class="col">
-              <input type="text" v-model="strLogin"/>
+            <div class="col-12">
+              <input type="text" class="w-100" v-model="strName" pattern="[А-Я|а-я|A-Z|a-z|\s]+"/>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col">
-              <p><label>Email: </label></p>
+          <div class="row-12 mt-2">
+            <div class="col-4 text-left pr-sm-0">
+              <label>Логин: </label>
             </div>
-            <div class="col">
-              <input type="text" v-model="strEmail"/>
+            <div class="col-12">
+              <input type="text" class="w-100" v-model="strLogin"/>
+            </div>
+          </div>
+
+          <div class="row-12 mt-2 mb-3">
+            <div class="col-4 text-left pr-sm-0">
+              <label>Email: </label>
+            </div>
+            <div class="col-12">
+              <input type="text" class="w-100" v-model="strEmail"/>
             </div>
           </div>
 

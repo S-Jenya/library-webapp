@@ -1,26 +1,91 @@
 <template>
-  <div class="container mt-3">
-    <div class="row">
-      <div class="col col-lg-4 col-md-5 col-sm-5 col-6 text-center">
+  <div class="container mt-2">
+    <div class="row mb-2">
+      <div class="col">
+        <h2>{{ getBookInfo.name }}</h2>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col col-lg-4 col-md-5 col-sm-5 col-6 mb-3 text-center">
         <img :src="getBookInfo.url" alt="Обложка" class="pr-1 w-100 h-100">
       </div>
       <div v-if="isLoadBokInfo" class="col col-lg-8 col-sm-10 col-auto">
-        <h2>{{ getBookInfo.name }}</h2>
-        <h2>{{ getBookInfo.author }}</h2>
-        <h5>Год издания:</h5> {{ getBookInfo.year }}
-        <h5>Жанр:</h5> {{ getBookInfo.genre }}
-        <h5>Описание:</h5> {{ getBookInfo.description }} <br/>
+
+        <div class="row ml-0 mb-2">
+          <div class="mr-2 ">
+            <h5 class="mt-auto mb-auto">Автор:</h5>
+          </div>
+          <div class="mt-auto mb-auto">
+            {{ getBookInfo.author }}
+          </div>
+        </div>
+
+
+        <div class="row ml-0 mb-2">
+          <div class="mr-2 ">
+            <h5 class="mt-auto mb-auto">Год издания:</h5>
+          </div>
+          <div class="mt-auto mb-auto">
+            {{ getBookInfo.year }}
+          </div>
+        </div>
+
+        <div class="row ml-0 mb-2">
+          <div class="mr-2 ">
+            <h5 class="mt-auto mb-auto">Жанр:</h5>
+          </div>
+          <div class="mt-auto mb-auto">
+            {{ getBookInfo.genre }}
+          </div>
+        </div>
+
+        <div class="row ml-0 mb-2">
+          <div class="mr-2 ">
+            <h5 class="mt-auto mb-auto">Описание:</h5>
+          </div>
+          <div class="mt-auto mb-auto">
+            {{ getBookInfo.description }}
+          </div>
+        </div>
 
         <small v-if="!isAuth" style="color: red">Для скачивания документа войдите в систему</small>
-        <b-button v-if="isAuth" variant="success" class="mr-2" @click="downLoadBookFunc(getBookInfo.id)">
-          Скачать
-        </b-button>
-        <b-button v-if="isAdmin" variant="info" class="mr-2" @click="$bvModal.show('idEditBookModal')">
-          Редактировать
-        </b-button>
-        <b-button v-if="isAdmin" variant="danger" class="mr-2" @click="deleteBookFunc(getBookInfo.id)">
-          Удалить
-        </b-button>
+        <!--        col-0 col-sm-0 col-md-0 col-lg-0 col-xl-0-->
+        <div class="row ml-0 mr-0 mb-2 col-0 mr-lg-0">
+          <div class="col-4 pr-0 pl-0 ml-0 mb-2
+                      col-sm-auto
+                      col-md-auto
+                      col-lg-auto
+                      col-xl-auto
+
+          mb-3">
+            <b-button v-if="isAuth" variant="success" class="mr-2" @click="downLoadBookFunc(getBookInfo.id)">
+              Скачать
+            </b-button>
+          </div>
+
+          <div class="col pr-0 pl-0  ml-0 mb-2
+                      col-sm-auto
+                      col-md-auto
+                      col-lg-auto
+                      col-xl-auto
+          ">
+            <b-button v-if="isAdmin" variant="info" class="mr-2" @click="$bvModal.show('idEditBookModal')">
+              Редактировать
+            </b-button>
+          </div>
+
+          <div class="col pr-0 pl-0 ml-0 mb-2
+                      col-sm-auto
+                      col-md-auto
+                      col-lg-auto
+                      col-xl-auto
+          ">
+            <b-button v-if="isAdmin" variant="danger" class="mr-2" @click="deleteBookFunc(getBookInfo.id)">
+              Удалить
+            </b-button>
+          </div>
+        </div>
+
         <editBookModal
             v-if="isShowEditModal"
             :id-book="getBookInfo.id"
@@ -33,10 +98,10 @@
         />
       </div>
     </div>
-      <h1>Комментарии</h1>
+    <h1>Комментарии</h1>
     <div v-if="isLoadBokInfo">
 
-      <CommentItem  v-for="(comment, index) in getBookInfo.comments" class="mb-3"
+      <CommentItem v-for="(comment, index) in getBookInfo.comments" class="mb-3"
                    :id-book="getBookInfo.id"
                    :idComment="comment.idComment"
                    :id-user="comment.user.idUser"
@@ -44,15 +109,23 @@
                    :name="comment.user.name"
                    :date="comment.date"
                    :text="comment.text"
-                    :index="index"
+                   :index="index"
       />
     </div>
 
     <div v-if="isAuth" class="row mt-1 mb-3">
-      <div class="col col-lg-10 text-center">
+      <div class="col-12 mb-3 text-center
+                      col-sm-9
+                      col-md-10 pr-md-2
+                      col-lg-10 pr-md-0
+                      col-xl-10">
         <b-input v-model="textMessage" class="mr-sm-2" placeholder="Новый комментарий..."></b-input>
       </div>
-      <div class="col col-lg-2 text-center">
+      <div class="col col-lg-2
+                  col-md-2 pl-md-0
+                   col-lg-0 pl-lg-0
+                   col-xl-2
+                  text-center">
         <b-button
             variant="outline-primary"
             @click="addCommentFunc(getBookInfo.id)"

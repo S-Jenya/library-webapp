@@ -66,6 +66,11 @@ export default {
         },
 
         async addGenre(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let response = await AXIOS.post('/admin/addGenre',
                 {
@@ -94,6 +99,12 @@ export default {
         },
 
         async updGenre(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
+
             let isErrorExist = false
             let response = await AXIOS.post('/admin/updateGenre',
                 {
@@ -125,6 +136,11 @@ export default {
         },
 
         async deleteGenre(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let response = await AXIOS.delete('/admin/deleteGenre/' + data.id,
                 {

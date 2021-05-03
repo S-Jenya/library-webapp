@@ -68,7 +68,11 @@ export default {
         },
 
         async changeBaseUserData(ctx, data) {
-            console.log(data)
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let response = await AXIOS.post('/user/changeBaseUserData',
                 data.baseData,

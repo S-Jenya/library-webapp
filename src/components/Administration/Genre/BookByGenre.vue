@@ -13,7 +13,12 @@
           </tr>
           </thead>
           <tr v-for="book in dataBook" :key="dataBook.idBook">
-            <td><a :href="/bookInfo/+book.idBook" title="Перейти к данной книге"> {{ book.name }} </a></td>
+            <td>
+              <p @click="redirectFunc(book.idBook)"
+                 style="color: blue"
+                 onmouseover="this.style.textDecoration ='underline'; this.style.cursor = 'pointer';"
+                 title="Перейти к данной книге"> {{ book.name }} </p>
+            </td>
             <td>{{ book.author.lastName }} {{ book.author.firstName }} {{ book.author.patronymic }}</td>
           </tr>
         </table>
@@ -42,6 +47,11 @@ export default {
     return {
       isEmpty: false,
       dataBook: []
+    }
+  },
+  methods: {
+    redirectFunc(idBook) {
+      this.$router.push('/bookInfo/' + idBook)
     }
   },
   watch: {

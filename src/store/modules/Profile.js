@@ -22,7 +22,6 @@ export default {
         },
         async fillUserDataProfile(state, data) {
             state.UserDataProfile = data
-            console.log(state.UserDataProfile);
             state.isLoadDataProfile = true
         },
     },
@@ -30,6 +29,11 @@ export default {
     actions: {
 
         async loadUserData(ctx) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
 
             let user = JSON.parse(localStorage.getItem('user'));

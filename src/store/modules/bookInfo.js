@@ -29,6 +29,11 @@ export default {
 
     actions: {
         async loadBookInfo(ctx, idBook) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let innerResponse
 
             let response = await AXIOS.get('/book/getInfo/' + idBook,
@@ -58,8 +63,11 @@ export default {
         },
 
         async downloadBook(ctx, data) {
-            console.log("Data:")
-            console.log(data)
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let user = JSON.parse(localStorage.getItem('user'));
             let idUser = user.idUser;
 
@@ -99,6 +107,11 @@ export default {
         },
 
         async deleteBook(ctx, data) {
+            ctx.dispatch("checkAuthData").then(i => {
+                if(i) {
+                    ctx.dispatch("logout")
+                }
+            })
             let isErrorExist = false
             let response = await AXIOS.delete('/admin/book/deleteBook/' + data.id,
                 {
