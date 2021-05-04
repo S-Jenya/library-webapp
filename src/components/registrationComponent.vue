@@ -7,10 +7,10 @@
         <p><label>Имя</label>
           <input id="name" type="text" class="form-control"
                  v-model="name"
-                 :class="{invalid: ($v.name.$dirty && !$v.name.required) || ($v.name.$dirty && !$v.name.alpha)}"
+                 :class="{invalid: ($v.name.$dirty && !$v.name.required) || ($v.name.$dirty && !$v.name.alphaName)}"
           />
           <small v-if="$v.name.$dirty && !$v.name.required" style="color: red">Поле не может быть пустым</small>
-          <small v-else-if="$v.name.$dirty && !$v.name.alpha" style="color: red">Имя может содержать только символы алфавита</small>
+          <small v-else-if="$v.name.$dirty && !$v.name.alphaName" style="color: red">Имя может содержать только символы кириллицы</small>
         </p>
 
         <p><label>Логин</label>
@@ -19,11 +19,11 @@
                  :class="{invalid: ($v.login.$dirty && !$v.login.required) || ($v.login.$dirty && !$v.login.alpha)}"
           />
           <small v-if="$v.login.$dirty && !$v.login.required" style="color: red">Поле не может быть пустым</small>
-          <small v-else-if="$v.login.$dirty && !$v.login.alpha" style="color: red">Логин может содержать только символы алфавита</small>
+          <small v-else-if="$v.login.$dirty && !$v.login.alpha" style="color: red">Логин может содержать только символы латинского алфавита</small>
         </p>
 
         <p><label>Email</label>
-          <input id="email" type="text" class="form-control"
+          <input id="email" type="email" class="form-control"
                  v-model.trim="email"
                  :class="{invalid: ($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.required)}"
           />
@@ -50,8 +50,12 @@
 </template>
 
 <script>
-import {email, required, minLength, alpha} from 'vuelidate/lib/validators'
+import {email, required, minLength, alpha, helpers} from 'vuelidate/lib/validators'
 import { mapActions } from 'vuex'
+
+// Каретка ^ означает совпадение с началом текста, а доллар $ – с концом.
+// Квантификатор звёздочка означает 0 или больше количеств повторений.
+const alphaName = helpers.regex('alphaName', /^[a-zA-Za-яА-Я]*$/)
 
 export default {
   name: "registrationComponent",
@@ -63,7 +67,7 @@ export default {
   }),
   validations: {
     name: {
-      alpha,
+      alphaName,
       required
     },
     login: {
@@ -91,7 +95,8 @@ export default {
           name: this.name,
           email: this.email,
           login: this.login,
-          password: this.password
+          password: this.password,
+          vm: this
         })
       }
     }

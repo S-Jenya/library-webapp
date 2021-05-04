@@ -3,7 +3,7 @@
     <div class="row mb-3 ">
       <div class="col-12 col-lg-9 col-md-8">
         <b-input
-            placeholder="Я ищу..." v-model="searchText"></b-input>
+            placeholder="Я ищу..." v-model="searchText" pattern="[0-9|А-Я|а-я|A-Z|a-z|.|,|\s]+"></b-input>
       </div>
       <div class="col col-lg-3 col-md-4">
         <b-button class="bg-primary my-1 my-sm-0 mr-2" @click="search">Поиск</b-button>
@@ -76,10 +76,12 @@ export default {
   methods: {
     ...mapActions(['filterCard']),
     search() {
-      this.filterCard({
-        mode: "byName",
-        strSearch: this.searchText
-      })
+      if(this.searchText > 0) {
+        this.filterCard({
+          mode: "byName",
+          strSearch: this.searchText
+        })
+      }
     },
     cancelSearch() {
       this.searchText = ""

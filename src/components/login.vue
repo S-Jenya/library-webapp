@@ -2,7 +2,7 @@
   <b-container style="margin-top: 30px; width: 50%" align-v="center">
     <form @submit.prevent="submitHandler">
       <div class="form-group">
-        <p><label>Имя</label>
+        <p><label>Логин</label>
           <input id="name" type="text" class="form-control" v-model="login"/>
         </p>
         <p><label>Пароль</label>

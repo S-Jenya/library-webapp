@@ -48,59 +48,104 @@ export default {
     actions: {
 
         async uploadBookInetImage(ctx, data) {
+            console.log(data);
             ctx.dispatch("checkAuthData").then(i => {
-                if(i) {
+                if (i) {
                     ctx.dispatch("logout")
                 }
             })
             let isErrorExist = false
             let response = await AXIOS.post('/admin/uploadBookInetImage',
-                data,
+                data.book,
                 {
                     headers: authHeader()
                     , "Content-Type": "multipart/form-data"
                     /* , Accept: 'application/json'*/
-                }).catch(error => {
-                console.log(error.response.data);
-                let erMes = document.getElementById('idBookError')
-                erMes.innerText = error.response.data.message
-            })
-                .then(res => {
-                    if (!isErrorExist) {
-                        let message = res.data.message
-                        window.location.href = "/";
+                })
+                .catch(error => {
+                    isErrorExist = true
+                    let message = error.response.data.message
+                    let erMes = document.getElementById('idBookError')
+                    erMes.innerText = message
+                    setTimeout(() => (data.vm.$bvToast.toast(message, {
+                        title: 'Ошибка',
+                        variant: 'danger',
+                        solid: true
+                    })), 10)
+                })
+                .then(result => {
+                    if (!isErrorExist && result.status === 200) {
+                        let message = "Книга успешно добавлена"
+                        data.vm.$bvModal.msgBoxOk(message, {
+                            title: 'Регистрация',
+                            size: 'md',
+                            buttonSize: 'lg',
+                            okVariant: 'success',
+                            okTitle: 'Принять',
+                            footerClass: 'p-2',
+                            hideHeaderClose: false,
+                            centered: true
+                        })
+                            .then(value => {
+                                if (value) {
+                                    document.location.href = "/"
+                                }
+                            })
                     }
                 });
         },
 
         async uploadBookUserImage(ctx, data) {
+            console.log(data)
             ctx.dispatch("checkAuthData").then(i => {
-                if(i) {
+                if (i) {
                     ctx.dispatch("logout")
                 }
             })
             let isErrorExist = false
+            console.log("GGG")
             let response = await AXIOS.post('/admin/uploadBookUserImage',
-                data,
+                data.book,
                 {
                     headers: authHeader()
                     , "Content-Type": "multipart/form-data"
-                }).catch(error => {
-                console.log(error.response.data);
-                let erMes = document.getElementById('idBookError')
-                erMes.innerText = error.response.data.message
-            })
-                .then(res => {
-                    if (!isErrorExist) {
-                        let message = res.data.message
-                        window.location.href = "/";
+                })
+                .catch(error => {
+                    isErrorExist = true
+                    let message = error.response.data.message
+                    let erMes = document.getElementById('idBookError')
+                    erMes.innerText = message
+                    setTimeout(() => (data.vm.$bvToast.toast(message, {
+                        title: 'Ошибка',
+                        variant: 'danger',
+                        solid: true
+                    })), 10)
+                })
+                .then(result => {
+                    if (!isErrorExist && result.status === 200) {
+                        let message = result.data.message
+                        data.vm.$bvModal.msgBoxOk(message, {
+                            title: 'Регистрация',
+                            size: 'md',
+                            buttonSize: 'lg',
+                            okVariant: 'success',
+                            okTitle: 'Принять',
+                            footerClass: 'p-2',
+                            hideHeaderClose: false,
+                            centered: true
+                        })
+                            .then(value => {
+                                if (value) {
+                                    document.location.href = "/"
+                                }
+                            })
                     }
                 });
         },
 
         async updBookData(ctx, data) {
             ctx.dispatch("checkAuthData").then(i => {
-                if(i) {
+                if (i) {
                     ctx.dispatch("logout")
                 }
             })
@@ -113,9 +158,14 @@ export default {
                 })
                 .catch(error => {
                     isErrorExist = true
-                    console.log(error.response.data);
+                    let message = error.response.data.message
                     let erMes = document.getElementById('idEditBookError')
-                    erMes.innerText = error.response.data.message
+                    erMes.innerText = message
+                    setTimeout(() => (data.vm.$bvToast.toast(message, {
+                        title: 'Ошибка',
+                        variant: 'danger',
+                        solid: true
+                    })), 10)
                 }).then(response => {
                     if (!isErrorExist) {
                         ctx.dispatch("loadBookInfo", data.idBook);
@@ -132,7 +182,7 @@ export default {
 
         async filterCard(ctx, data) {
             ctx.dispatch("checkAuthData").then(i => {
-                if(i) {
+                if (i) {
                     ctx.dispatch("logout")
                 }
             })
@@ -159,12 +209,12 @@ export default {
             response.data.forEach(element => {
                 axios.get(element.url)
                     .then(response => {
-                        if(response.data.items !== undefined) {
+                        if (response.data.items !== undefined) {
                             let url = response.data.items[0].volumeInfo.imageLinks.smallThumbnail
                             ctx.commit("swapData",
                                 {
                                     element: element,
-                                    url:  url
+                                    url: url
                                 });
                         }
                     })

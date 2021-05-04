@@ -4,7 +4,8 @@
         :img-src="imgSrc"
         img-alt="Картинка"
         img-top
-        style="max-width:15rem; height: 600px; max-height: 600px;"
+        img-height="400"
+        style="width: 15rem; height: 600px;"
         class="md-2 "
     >
       <b-card-title>

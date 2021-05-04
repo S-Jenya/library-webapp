@@ -7,7 +7,8 @@
       <div class="form-group p-3">
         <div id="idBookError" style="color: red"></div>
         <p><label>Наименование</label>
-          <input id="name" type="text" class="form-control" v-model="strNameVal" required/>
+          <input id="name" type="text" class="form-control" v-model="strNameVal"
+                 pattern="[0-9|А-Я|а-я|A-Z|a-z|.|,|\s]+" required/>
         </p>
         <p><label>Год издания</label>
           <input id="year" type="number" min="0" max="3000" step="1" value="2021" class="form-control"
@@ -17,8 +18,7 @@
         <p><label>Описание</label>
           <textarea id="description" type="text" class="form-control text-break" v-model="strDescription"
                     style="height: 6rem;"
-                    pattern="[0-9|А-Я|а-я|A-Z|a-z|.|,|\s]+"
-                 required/>
+                    pattern="[0-9|А-Я|а-я|A-Z|a-z|.|,|\s]+" required/>
         </p>
         <label>Жанр</label>
         <p>
@@ -95,6 +95,13 @@ export default {
       this.baseData.append("idBook", this.idBook)
       this.baseData.append("name", this.strNameVal)
       this.baseData.append("year", this.strYear)
+      if(this.description > 256) {
+        let erMes = document.getElementById('idBookError')
+        let message = "Длина описания небольше 255 символов! Текущее число символов: " + this.description.length;
+        erMes.innerText = message
+        this.baseData = undefined
+        return;
+      }
       this.baseData.append("description", this.strDescription)
       this.baseData.append("genre", document.getElementById('genre').value)
       this.baseData.append("author", document.getElementById('author').value)

@@ -10,7 +10,7 @@
         <p><label>Пароль</label>
           <input id="password" type="password" class="form-control" v-model.trim="password"/>
         </p>
-        <div id="errorField"></div>
+        <div id="errorField" style="color: red"></div>
       </div>
       <template #modal-footer>
         <b-button type="button" @click="submitHandler">Войти</b-button>

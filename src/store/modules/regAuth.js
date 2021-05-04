@@ -31,6 +31,7 @@ export default {
 
     actions: {
         async createUser(ctx, data) {
+            let isErrorExist = false
             let response = await AXIOS.post('/registration/createUser',
                 {
                     name: data.name,
@@ -40,12 +41,33 @@ export default {
                 }
             ).then(result => {
                 if (result.status === 200) {
-                    document.location.href = "/"
+                    let isErrorExist = true
+                    let message = result.data.message
+                    data.vm.$bvModal.msgBoxOk(message, {
+                        title: 'Регистрация',
+                        size: 'md',
+                        buttonSize: 'lg',
+                        okVariant: 'success',
+                        okTitle: 'Принять',
+                        footerClass: 'p-2',
+                        hideHeaderClose: false,
+                        centered: true
+                    })
+                        .then(value => {
+                            if (value) {
+                                document.location.href = "/"
+                            }
+                        })
                 }
             }).catch(error => {
                 console.log(error.response.data);
+                let message = error.response.data.message
+                setTimeout(() => (data.vm.$bvToast.toast(message, {
+                    title: 'Ошибка',
+                    variant: 'danger',
+                    solid: true
+                })), 10)
             });
-            ctx.commit("clearListRole");
         },
 
         async loginSubmitHandler(ctx, data) {
@@ -62,14 +84,14 @@ export default {
                 }
 
             }).catch(error => {
-                document.getElementById('errorField').append(error.response.data.message)
-                console.log(error.response.data);
+                let erMes = document.getElementById('errorField')
+                erMes.innerText = error.response.data.message
             });
         },
 
         async changeBaseUserData(ctx, data) {
             ctx.dispatch("checkAuthData").then(i => {
-                if(i) {
+                if (i) {
                     ctx.dispatch("logout")
                 }
             })
@@ -86,7 +108,7 @@ export default {
             })
                 .then(res => {
                     if (!isErrorExist) {
-                        if(data.mode === 0) {
+                        if (data.mode === 0) {
                             let message = 'Логин успешно обновлён. Для продолжения работы пройдите повторную авторизацию'
                             data.vm.$bvModal.msgBoxOk(message, {
                                 title: 'Смена логина',

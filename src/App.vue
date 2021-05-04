@@ -13,12 +13,74 @@
                          style="background: blue; color: white; font-size: 20pt;">≡
         </b-navbar-toggle>
 
-        <div class="col-xl-4 text-lg-center col-lg-6 col-md-5">
+        <!--        Без авторизации-->
+        <div v-if="isAuth === false" class="col-xl-4 text-lg-center col-lg-6 col-md-5">
+          <b-collapse id="nav-collapse" is-nav class=" row-xl-12 row-lg-12 ml-md-3 ml-3 ml-lg-3 pl-md-0">
+            <div class="col-xl-1 col-lg-1">
+              <b-navbar-nav left class="container ml-md-0 hidden-xs-down "></b-navbar-nav>
+            </div>
+            <b-navbar-nav class="col-xl-11 col-lg-11 col-md-12">
+              <div class="mb-auto mt-auto
+                          col-xl-12 pl-xl-1 text-xl-right
+                          col-lg-12 text-lg-right pl-xl-0
+                          pl-md-0
+                          pl-sm-0
+                          pl-0">
+                <div class="row-md-6 row-xl-6 ml-md-2 ml-sm-2 ml-2">
+                  <router-link
+                      type="text"
+                      to="/registration">Регистрация
+                  </router-link>
+                </div>
+                <div class="row-md-6 row-xl-6 row-md-6 ml-md-2 ml-sm-2 ml-2">
+                  <a style="color: blue" class="bg-light mr-4"
+                     onmouseover="this.style.textDecoration ='underline'; this.style.cursor = 'pointer';"
+                     @click="openRegistrationModal">Войти
+                  </a>
+                </div>
+              </div>
+            </b-navbar-nav>
+          </b-collapse>
+        </div>
+
+        <!--        Авторизованный пользователь USER-->
+        <div v-if="isAuth && !isAdmin" class="col-xl-4 text-lg-center col-lg-6 col-md-5">
+          <b-collapse id="nav-collapse" is-nav class=" row-xl-12 row-lg-12 ml-md-3 ml-3 ml-lg-3 pl-md-0">
+            <div class="col-xl-1 col-lg-1">
+              <b-navbar-nav left class="container ml-md-0 hidden-xs-down "></b-navbar-nav>
+            </div>
+            <b-navbar-nav class="col-xl-11 col-lg-11 col-md-12">
+              <div class="mb-auto mt-auto
+                          col-xl-12 pl-xl-1 text-xl-right
+                          col-lg-12 text-lg-right pl-xl-0
+                          pl-md-0
+                          pl-sm-0
+                          pl-0">
+                <div class="row-md-6 row-xl-6 row-md-6 ml-md-2 ml-sm-2 ml-2">
+                  <a style="color: blue" class="bg-light "
+                     onmouseover="this.style.textDecoration ='underline'; this.style.cursor = 'pointer';"
+                     @click="$router.push('/myProfile')">Личный кабинет
+                  </a>
+                </div>
+                <div class="row-md-6 row-xl-6 ml-md-2 ml-sm-2 mr-3">
+                  <a v-if="isAuth === true"
+                     onmouseover="this.style.textDecoration ='underline'; this.style.cursor = 'pointer';"
+                     class="bg-light mr-3 mt-auto mb-auto"
+                     @click="logout">Выйти
+                  </a>
+                </div>
+              </div>
+            </b-navbar-nav>
+          </b-collapse>
+        </div>
+
+        <!--        Авторизованный пользователь ADMIN-->
+        <div v-if="isAuth && isAdmin" class="col-xl-4 text-lg-center col-lg-6 col-md-5">
           <b-collapse id="nav-collapse" is-nav class=" container row-xl-12 row-lg-12 ml-md-3 ml-3 ml-lg-3 pl-md-0">
             <b-navbar-nav left class="container ml-md-0 hidden-xs-down col-xl-0 col-lg-0">
             </b-navbar-nav>
             <b-navbar-nav class="col-xl-12 col-md-12 col-lg-12  w-75">
-<!--                          <div class="bg-dark w-0  mb-3" style="height: 2px;"/>-->
+              <!--                          <div class="bg-dark w-0  mb-3" style="height: 2px;"/>-->
               <p v-if="isAuth === true" style="color: blue"
                  class="bg-light text-xl-right mt-auto mb-auto
                         col-xl-4 pr-xl-1 text-lg-center
@@ -125,9 +187,6 @@ export default {
 </script>
 
 <style v-if="true">
-body {
-}
-
 #app {
   position: relative;
   min-height: 100vh;

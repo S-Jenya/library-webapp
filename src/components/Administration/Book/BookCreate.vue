@@ -76,38 +76,52 @@ export default {
       this.baseData = new FormData()
       this.baseData.append("name", this.name)
       this.baseData.append("year", this.year)
+      if(this.description > 256) {
+        let erMes = document.getElementById('idBookError')
+        let message = "Длина описания небольше 255 символов! Текущее число символов: " + this.description.length;
+        erMes.innerText = message
+        this.baseData = undefined
+        return;
+      }
       this.baseData.append("description", this.description)
       this.baseData.append("genre", document.getElementById('genre').value)
       this.baseData.append("author", document.getElementById('author').value)
 
       if (!this.options) {
         let fileImage = this.$refs.uploadImage.files[0]
+        console.log(fileImage.type)
         if (fileImage.type !== "image/png" && fileImage.type !== "image/jpeg") {
           let erMes = document.getElementById('idBookError')
           erMes.innerText = "Недопустимый формат обложки. Используйте jpeg/png"
           this.baseData = undefined
-          console.log(this.baseData)
+          // console.log(this.baseData)
           return
         }
         this.baseData.append("fileImage", fileImage)
       }
 
       let fileContent = this.$refs.uploadContent.files[0]
-      console.log(fileContent)
+      // console.log(fileContent)
       if (fileContent.type !== "application/pdf") {
         let erMes = document.getElementById('idBookError')
         erMes.innerText = "Недопустимый формат книги. Используйте pdf"
         this.baseData = undefined
-        console.log(this.baseData)
+        // console.log(this.baseData)
         return
       }
       this.baseData.append("fileContent", fileContent)
 
        this.baseData.forEach(i => console.log(i))
       if (this.options) {
-        this.uploadBookInetImage(this.baseData);
+        this.uploadBookInetImage({
+          book: this.baseData,
+          vm: this
+        });
       } else {
-        this.uploadBookUserImage(this.baseData)
+        this.uploadBookUserImage({
+          book: this.baseData,
+          vm: this
+        })
       }
     },
   },
