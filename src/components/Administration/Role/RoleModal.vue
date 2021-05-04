@@ -7,7 +7,7 @@
           {{ title }}
         </template>
         <div class="d-block text-center">
-          {{ text }} <input type="text" v-model="inputText">
+          {{ text }} <input type="text" v-model="inputText" pattern="[А-Я|а-я|A-Z|a-z|\s]+">
           <div id="idRoleError" style="color: red"></div>
         </div>
         <template #modal-footer>

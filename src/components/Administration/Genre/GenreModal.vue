@@ -5,10 +5,15 @@
         <template #modal-title>
           {{ title }}
         </template>
-        <div class="d-block text-center">
-          <p>
-            {{ text }} <input type="text" class="w-50" v-model="strVal"/>
-          </p>
+        <div class="d-block text-center container">
+          <div class="row-12 mt-2">
+            <div class="col-12 text-left pr-sm-0">
+              <label>{{ text }} </label>
+            </div>
+            <div class="col-12">
+              <input type="text" class="w-100" v-model="strVal" pattern="[А-Я|а-я|A-Z|a-z|\s]+"/>
+            </div>
+          </div>
           <div id="idGenreError" style="color: red"></div>
         </div>
         <template #modal-footer>

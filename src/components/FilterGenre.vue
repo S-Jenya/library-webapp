@@ -15,7 +15,7 @@
              :id="genre.idGenre"
              :value="genre.name"
              name="categories"
-             class="bg-light rounded-pill pr-3 pt-1 pb-1 mr-2 mb-2"
+             class="bg-light rounded-pill pr-3 pl-3 pt-1 pb-1 mr-2 mb-2 "
              :style="styleData"
              @mouseover="(event) => changeColor(event, styleData, index)"
              @mouseleave="() => originalColor(styleData, index)"

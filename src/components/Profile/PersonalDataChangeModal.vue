@@ -12,7 +12,8 @@
               <label>Имя: </label>
             </div>
             <div class="col-12">
-              <input type="text" class="w-100" v-model="strName" pattern="[А-Я|а-я|A-Z|a-z|\s]+"/>
+              <input type="text" class="w-100" v-model="strName"
+              />
             </div>
           </div>
 
